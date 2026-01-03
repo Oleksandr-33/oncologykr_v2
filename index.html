@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="light">
+  <!-- Атрибут data-theme за замовчуванням на "light" -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- favicon (за замовчуванням світла) -->
+    <link id="site-favicon" rel="icon" href="/favicon.ico" />
+
+    <!-- manifest (PWA) -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- (опційно) для iOS ярлика -->
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+
+    <!-- колір “шапки” браузера на мобільних -->
+    <meta name="theme-color" content="#0b5f66" />
+
+    <title>Криворізький онкодиспансер - Головна</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Шапка сайту з логотипом та навігацією -->
+    <header>
+      <div class="container header-container">
+        <h1 class="logo">МедЦентр</h1>
+        <!-- Навігаційне меню -->
+        <nav>
+          <ul class="menu">
+            <li><a href="#/home" id="nav-home">Головна</a></li>
+            <li><a href="#/about" id="nav-about">Про нас</a></li>
+            <li><a href="#/doctors" id="nav-doctors">Лікарі</a></li>
+          </ul>
+        </nav>
+        <!-- Кнопка перемикання теми -->
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          aria-label="Перемикнути тему"
+        >
+          🌙
+        </button>
+      </div>
+    </header>
+
+    <!-- Основний контейнер для динамічного контенту сторінок -->
+    <main id="content">
+      <!-- Початковий контент можна залишити порожнім; буде завантажено через JS -->
+      <noscript
+        >Будь ласка, увімкніть JavaScript для перегляду вмісту.</noscript
+      >
+    </main>
+
+    <!-- Футер сайту -->
+    <footer>
+      <div class="container footer-container">
+        <p>&copy; 2026 Медичний центр "Здоров'я". Всі права захищено.</p>
+      </div>
+    </footer>
+
+    <!-- Підключення скрипта додатку -->
+    <script src="app.js"></script>
+  </body>
+</html>
