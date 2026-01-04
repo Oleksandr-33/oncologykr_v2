@@ -155,11 +155,25 @@ function router() {
    =============================== */
 
 const THEME_KEY = 'theme';
+const THEME_COLORS = {
+  light: '#f5f7fb',
+  dark: '#0f172a',
+};
 
 function setFavicon(theme) {
   const link = document.getElementById('site-favicon');
   if (!link) return;
   link.href = abs(theme === 'dark' ? 'favicon-dark.ico' : 'favicon.ico');
+}
+
+function setThemeColor(theme) {
+  const meta =
+    document.getElementById('meta-theme-color') ||
+    document.querySelector('meta[name="theme-color"]');
+
+  if (!meta) return;
+
+  meta.setAttribute('content', THEME_COLORS[theme] || THEME_COLORS.light);
 }
 
 function applyTheme(theme) {
@@ -171,6 +185,9 @@ function applyTheme(theme) {
 
   // 2. Міняємо favicon
   setFavicon(safe);
+
+  // 2.1 Оновлюємо theme-color (колір UI браузера на мобільних)
+  setThemeColor(safe);
 
   // 3. Оновлюємо кнопку теми (ARIA, title)
   const btn = document.getElementById('theme-toggle');

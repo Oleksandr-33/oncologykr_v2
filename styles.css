@@ -540,6 +540,26 @@ main {
   font-weight: 800;
 }
 
+.qr-link {
+  display: inline-block;
+  border-radius: 14px; /* підлаштуй під твій дизайн */
+  cursor: pointer;
+  outline: none;
+}
+
+.qr-link img {
+  display: block;
+}
+
+/* hover/focus — щоб було видно що це клікабельно */
+.qr-link:hover {
+  transform: translateY(-1px);
+}
+
+.qr-link:focus-visible {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.35);
+}
+
 .list {
   margin: 0;
   padding-left: 18px;
