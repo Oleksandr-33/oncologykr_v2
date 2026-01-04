@@ -145,6 +145,61 @@ async function loadPage(route) {
   setMobileNavOpen(false);
 }
 
+/* ===============================
+   PDF MODAL (Doctors: наказ)
+   =============================== */
+
+function openPdfModal(src) {
+  const modal = document.getElementById('pdfModal');
+  const frame = document.getElementById('pdfFrame');
+  if (!modal || !frame) return;
+
+  frame.src = abs(src);
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+
+  // фокус на кнопку закриття (зручно з клавіатури)
+  modal.querySelector('[data-close]')?.focus();
+}
+
+function closePdfModal() {
+  const modal = document.getElementById('pdfModal');
+  const frame = document.getElementById('pdfFrame');
+  if (!modal || !frame) return;
+
+  frame.src = '';
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+function initPdfModal() {
+  // Делегування подій: працює навіть після підвантаження partial
+  document.addEventListener('click', (e) => {
+    const openBtn = e.target.closest('[data-pdf]');
+    const closeBtn = e.target.closest('[data-close]');
+
+    // Відкрити
+    if (openBtn) {
+      e.preventDefault();
+      openPdfModal(openBtn.dataset.pdf);
+      return;
+    }
+
+    // Закрити (клік по фону або по ✕)
+    if (closeBtn) {
+      e.preventDefault();
+      closePdfModal();
+    }
+  });
+
+  // ESC — закрити
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closePdfModal();
+  });
+}
+
 /* ---------- ROUTER ---------- */
 function router() {
   loadPage(getRoute());
@@ -219,4 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // mobile nav
   initMobileNav();
+
+  // pdf modal
+  initPdfModal();
 });
