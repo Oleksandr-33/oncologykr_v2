@@ -24,7 +24,6 @@
       <div class="container header-inner">
         <!-- Бренд -->
         <a class="brand" href="#/home" aria-label="На головну">
-          <span class="brand-domain">oncologykr.com</span>
           <span class="brand-title">
             КОМУНАЛЬНЕ НЕКОМЕРЦІЙНЕ ТОВАРИСТВО "КРИВОРІЗЬКИЙ ОНКОЛОГІЧНИЙ
             ДИСПАНСЕР" ДНІПРОПЕТРОВСЬКОЇ ОБЛАСНОЇ РАДИ"
@@ -42,21 +41,45 @@
 
         <!-- Дії -->
         <div class="header-actions">
-          <a
+          <!-- <a
             class="header-phone"
             href="tel:+380564054547"
             aria-label="Зателефонувати"
           >
             (056) 405-45-47
-          </a>
+          </a> -->
 
           <button
             id="theme-toggle"
             class="theme-toggle"
             type="button"
-            aria-label="Перемикнути тему"
+            aria-label="Перемкнути тему"
+            aria-pressed="false"
+            title="Перемкнути тему"
           >
-            🌙
+            <!-- Moon (для light -> показуємо місяць) -->
+            <svg
+              class="theme-ic theme-ic--moon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                fill="currentColor"
+                d="M21 14.5A8.5 8.5 0 0 1 9.5 3a7 7 0 1 0 11.5 11.5Z"
+              />
+            </svg>
+
+            <!-- Sun (для dark -> показуємо сонце) -->
+            <svg
+              class="theme-ic theme-ic--sun"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                fill="currentColor"
+                d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12Zm0-16a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0V3a1 1 0 0 1 1-1Zm0 18a1 1 0 0 1 1 1v1a1 1 0 1 1-2 0v-1a1 1 0 0 1 1-1ZM4.22 5.64a1 1 0 0 1 1.41 0l.71.71A1 1 0 1 1 4.93 7.77l-.71-.71a1 1 0 0 1 0-1.42Zm13.44 13.44a1 1 0 0 1 1.41 0l.71.71a1 1 0 1 1-1.41 1.41l-.71-.71a1 1 0 0 1 0-1.41ZM2 12a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1Zm18 0a1 1 0 0 1 1-1h1a1 1 0 1 1 0 2h-1a1 1 0 0 1-1-1ZM4.22 18.36a1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1-1.41 0Zm13.44-13.44a1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1-1.41 0Z"
+              />
+            </svg>
           </button>
 
           <!-- Гамбургер (mobile) -->
@@ -67,8 +90,25 @@
             aria-label="Відкрити меню"
             aria-expanded="false"
             aria-controls="mobile-nav"
+            title="Меню"
           >
-            <span class="nav-toggle-lines" aria-hidden="true"></span>
+            <!-- Menu -->
+            <svg
+              class="nav-ic nav-ic--menu"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+
+            <!-- Close -->
+            <svg
+              class="nav-ic nav-ic--close"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path d="M6 6l12 12M18 6l-12 12" />
+            </svg>
           </button>
         </div>
       </div>

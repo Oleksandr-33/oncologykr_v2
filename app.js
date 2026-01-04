@@ -164,29 +164,42 @@ function setFavicon(theme) {
 
 function applyTheme(theme) {
   const safe = theme === 'dark' ? 'dark' : 'light';
+
+  // 1. Встановлюємо тему на <html>
   document.documentElement.setAttribute('data-theme', safe);
   localStorage.setItem(THEME_KEY, safe);
+
+  // 2. Міняємо favicon
   setFavicon(safe);
 
+  // 3. Оновлюємо кнопку теми (ARIA, title)
   const btn = document.getElementById('theme-toggle');
-  if (btn) btn.textContent = safe === 'dark' ? '🌞' : '🌙';
+  if (btn) {
+    btn.setAttribute('aria-pressed', safe === 'dark' ? 'true' : 'false');
+    btn.setAttribute(
+      'aria-label',
+      safe === 'dark' ? 'Перемкнути на світлу тему' : 'Перемкнути на темну тему'
+    );
+    btn.title = btn.getAttribute('aria-label');
+  }
 }
 
 /* ---------- INIT ---------- */
 document.addEventListener('DOMContentLoaded', () => {
-  /* theme */
-  applyTheme(localStorage.getItem(THEME_KEY) || 'light');
+  // theme
+  const saved = localStorage.getItem(THEME_KEY) || 'light';
+  applyTheme(saved);
 
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
-    const cur = document.documentElement.getAttribute('data-theme');
+    const cur = document.documentElement.getAttribute('data-theme') || 'light';
     applyTheme(cur === 'dark' ? 'light' : 'dark');
   });
 
-  /* router */
+  // router
   window.addEventListener('hashchange', router);
   if (!location.hash) location.hash = '#/home';
   router();
 
-  /* mobile nav */
+  // mobile nav
   initMobileNav();
 });

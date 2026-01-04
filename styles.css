@@ -166,12 +166,6 @@ main {
   overflow: hidden;
 }
 
-.header-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .chip {
   display: inline-flex;
   align-items: center;
@@ -187,7 +181,11 @@ main {
 }
 
 .chip:hover {
-  border-color: color-mix(in srgb, var(--color-border) 40%, var(--color-accent));
+  border-color: color-mix(
+    in srgb,
+    var(--color-border) 40%,
+    var(--color-accent)
+  );
 }
 
 .icon-btn {
@@ -201,7 +199,11 @@ main {
 }
 
 .icon-btn:hover {
-  border-color: color-mix(in srgb, var(--color-border) 40%, var(--color-accent));
+  border-color: color-mix(
+    in srgb,
+    var(--color-border) 40%,
+    var(--color-accent)
+  );
 }
 
 .icon-btn:focus-visible {
@@ -246,47 +248,8 @@ main {
 .menu a.active,
 .menu a[aria-current='page'] {
   background: color-mix(in srgb, var(--color-accent) 14%, transparent);
-  border: 1px solid color-mix(in srgb, var(--color-accent) 26%, var(--color-border));
-}
-
-/* Mobile menu (drawer) */
-.nav-toggle {
-  display: inline-flex;
-}
-
-@media (min-width: 860px) {
-  .nav-toggle {
-    display: none;
-  }
-}
-
-.mobile-drawer {
-  display: none;
-  border-top: 1px solid var(--color-border);
-  background: color-mix(in srgb, var(--color-bg) 92%, transparent);
-}
-
-body.nav-open .mobile-drawer {
-  display: block;
-}
-
-.mobile-menu {
-  list-style: none;
-  margin: 0;
-  padding: 12px 0 16px;
-  display: grid;
-  gap: 6px;
-}
-
-.mobile-menu a {
-  display: flex;
-  padding: 12px 14px;
-  border-radius: 12px;
-  text-decoration: none;
-}
-
-.mobile-menu a:hover {
-  background: color-mix(in srgb, var(--color-surface) 65%, transparent);
+  border: 1px solid
+    color-mix(in srgb, var(--color-accent) 26%, var(--color-border));
 }
 
 /* ===================
@@ -298,10 +261,22 @@ body.nav-open .mobile-drawer {
   background: color-mix(in srgb, var(--color-bg) 96%, transparent);
 }
 
+/* Безпечні бокові відступи футера на мобільних (навіть якщо десь переб'ється контейнер) */
+.site-footer {
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
+}
+
 .footer-inner {
   padding: 28px 0;
   display: grid;
   gap: 16px;
+}
+
+/* У футері контейнер не дублює паддінги, бо вони вже на .site-footer */
+.site-footer .container {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 @media (min-width: 860px) {
@@ -324,8 +299,11 @@ body.nav-open .mobile-drawer {
 
 .footer-list {
   margin: 10px 0 0;
-  padding-left: 18px;
+  padding: 0; /* було padding-left: 18px; */
+  list-style: none; /* прибираємо маркери */
   color: var(--color-muted);
+  display: grid;
+  gap: 8px;
 }
 
 .footer-list a {
@@ -335,6 +313,10 @@ body.nav-open .mobile-drawer {
 .footer-copy {
   color: var(--color-muted);
   font-size: 0.95rem;
+}
+
+.footer-block {
+  max-width: 68ch;
 }
 
 /* ===================
@@ -412,7 +394,11 @@ body.nav-open .mobile-drawer {
 .btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 10px 24px color-mix(in srgb, #000 14%, transparent);
-  border-color: color-mix(in srgb, var(--color-border) 40%, var(--color-accent));
+  border-color: color-mix(
+    in srgb,
+    var(--color-border) 40%,
+    var(--color-accent)
+  );
 }
 
 .btn:active {
@@ -585,4 +571,206 @@ body.nav-open .mobile-drawer {
 .fade-in.is-visible {
   opacity: 1;
   transform: none;
+}
+
+/* =========================
+   Theme toggle (SVG icon)
+   ========================= */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Кнопка перемикання теми */
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+
+  display: inline-grid;
+  place-items: center;
+
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+
+  color: var(--color-text);
+
+  cursor: pointer;
+  user-select: none;
+
+  padding: 0;
+  line-height: 1;
+  text-decoration: none;
+
+  transition: transform 0.12s ease, background-color 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.theme-toggle:hover {
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+
+  border-color: color-mix(
+    in srgb,
+    var(--color-border) 70%,
+    var(--color-accent)
+  );
+  transform: translateY(-1px);
+}
+
+.theme-toggle:active {
+  transform: translateY(0);
+}
+
+/* Без “дивної рамки” при кліку мишкою */
+.theme-toggle:focus {
+  outline: none;
+}
+
+/* Але з нормальним фокусом для клавіатури */
+.theme-toggle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-accent) 80%, transparent);
+  outline-offset: 3px;
+}
+
+/* SVG іконки */
+.theme-ic {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* Показ/приховування іконок в залежності від теми */
+html[data-theme='light'] .theme-ic--sun {
+  display: none;
+}
+html[data-theme='light'] .theme-ic--moon {
+  display: block;
+}
+
+html[data-theme='dark'] .theme-ic--sun {
+  display: block;
+}
+html[data-theme='dark'] .theme-ic--moon {
+  display: none;
+}
+/* ===================
+   Mobile nav (узгоджено з index.html + app.js)
+   =================== */
+
+.mobile-nav-inner {
+  padding: 12px 0 16px;
+  display: grid;
+  gap: 6px;
+}
+
+.mobile-link {
+  display: flex;
+  padding: 12px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+}
+
+.mobile-link:hover {
+  background: color-mix(in srgb, var(--color-surface) 65%, transparent);
+}
+/* Hamburger button icons (SVG) */
+.nav-toggle {
+  width: 40px;
+  height: 40px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 0;
+}
+
+.nav-toggle:hover {
+  background: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  border-color: color-mix(
+    in srgb,
+    var(--color-border) 70%,
+    var(--color-accent)
+  );
+}
+
+.nav-toggle:focus {
+  outline: none;
+}
+.nav-toggle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-accent) 80%, transparent);
+  outline-offset: 3px;
+}
+
+.nav-ic {
+  width: 22px;
+  height: 22px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* show menu icon by default */
+.nav-ic--close {
+  display: none;
+}
+
+/* when opened => show close icon */
+.nav-toggle[aria-expanded='true'] .nav-ic--menu {
+  display: none;
+}
+.nav-toggle[aria-expanded='true'] .nav-ic--close {
+  display: block;
+}
+/* ===============================
+   RESPONSIVE NAV VISIBILITY
+   =============================== */
+
+/* Desktop by default */
+.site-nav {
+  display: block;
+}
+
+.nav-toggle {
+  display: none;
+}
+
+.mobile-nav {
+  display: none;
+}
+
+/* Mobile */
+@media (max-width: 1023px) {
+  .site-nav {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: inline-grid;
+  }
+
+  /* mobile-nav існує, але сховане, поки не відкрили меню */
+  .mobile-nav {
+    display: block; /* елемент є в потоці */
+    max-height: 0; /* сховано */
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: max-height 0.25s ease, opacity 0.2s ease;
+  }
+
+  /* JS додає html.nav-open -> меню розгортається */
+  html.nav-open .mobile-nav {
+    max-height: 360px; /* можна 260-420, під контент */
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
