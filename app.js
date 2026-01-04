@@ -122,12 +122,29 @@ async function loadPage(route) {
 
   const file = routes[route] || routes['404'];
 
+  /* === CLEANUP BEFORE PAGE LOAD (SPA safety) === */
+  // 1) На всякий випадок повертаємо скрол (модалки могли залишити overflow:hidden)
+  document.body.style.overflow = '';
+
+  // 2) Закрити PDF-модалку (Doctors: наказ), якщо була відкрита
+  closePdfModal();
+
+  // 3) Закрити About-модалку, якщо була відкрита
+  const aboutModal = document.getElementById('aboutModal');
+  if (aboutModal) {
+    aboutModal.classList.remove('is-open');
+    aboutModal.setAttribute('aria-hidden', 'true');
+  }
+
   try {
     const res = await fetch(abs(file), { cache: 'no-store' });
     if (!res.ok) throw new Error(res.status);
 
     // ⬇️ 1. ВСТАВЛЯЄМО HTML
     main.innerHTML = await res.text();
+
+    /* === CLEANUP AFTER PAGE LOAD (safety net) === */
+    document.body.style.overflow = '';
 
     // ⬇️ 2. ОДРАЗУ ПІСЛЯ ЦЬОГО — АКТИВУЄМО fade-in
     initFadeIn(main);
@@ -200,6 +217,68 @@ function initPdfModal() {
   });
 }
 
+function initAboutModal() {
+  // Cache references to modal elements
+  function getParts() {
+    const modal = document.getElementById('contentModal');
+    const titleEl = document.getElementById('contentModalTitle');
+    const contentEl = document.getElementById('contentModalContent');
+    return { modal, titleEl, contentEl };
+  }
+
+  // Open the modal with content for a given section
+  function openModal(key, label) {
+    const { modal, titleEl, contentEl } = getParts();
+    const tpl = document.getElementById(`tpl-${key}`);
+    if (!modal || !tpl || !titleEl || !contentEl) return;
+
+    // Set the modal title (accessible name) and content
+    titleEl.textContent = label;
+    contentEl.innerHTML = ''; // clear previous content
+    contentEl.appendChild(tpl.content.cloneNode(true));
+
+    // Show the modal
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.documentElement.classList.add('modal-open'); // lock page scroll
+
+    // Move focus to the close button for accessibility (so that ESC works and focus is trapped in modal)
+    modal.querySelector('.content-close')?.focus();
+  }
+
+  // Close the modal and reset state
+  function closeModal() {
+    const { modal } = getParts();
+    if (!modal) return;
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.documentElement.classList.remove('modal-open'); // re-enable page scroll
+  }
+
+  // Event delegation for opening/closing the modal
+  document.addEventListener('click', (e) => {
+    const openBtn = e.target.closest('[data-modal-open]');
+    const closeBtn = e.target.closest('[data-close]');
+    if (openBtn) {
+      e.preventDefault();
+      const sectionKey = openBtn.getAttribute('data-modal-open');
+      const sectionName = openBtn.textContent.trim();
+      openModal(sectionKey, sectionName);
+    }
+    if (closeBtn) {
+      e.preventDefault();
+      closeModal();
+    }
+  });
+
+  // Close modal on ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeModal();
+    }
+  });
+}
+
 /* ---------- ROUTER ---------- */
 function router() {
   loadPage(getRoute());
@@ -256,6 +335,34 @@ function applyTheme(theme) {
   }
 }
 
+document.addEventListener('click', (e) => {
+  const trigger = e.target.closest('.section-trigger');
+  const close = e.target.closest('[data-close]');
+
+  const modal = document.getElementById('contentModal');
+  const body = document.getElementById('contentModalBody');
+
+  // Відкрити
+  if (trigger) {
+    const key = trigger.dataset.section;
+    const tpl = document.getElementById(`section-${key}`);
+    if (!tpl) return;
+
+    body.innerHTML = tpl.innerHTML;
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.documentElement.classList.add('modal-open');
+  }
+
+  // Закрити
+  if (close) {
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    body.innerHTML = '';
+    document.documentElement.classList.remove('modal-open');
+  }
+});
+
 /* ---------- INIT ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   // theme
@@ -277,4 +384,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // pdf modal
   initPdfModal();
+  initAboutModal();
 });
