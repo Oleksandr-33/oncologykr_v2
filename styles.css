@@ -157,13 +157,28 @@ main {
   line-height: 1.15;
   margin: 0;
   font-size: clamp(15px, 1.3vw + 10px, 20px);
+}
 
-  /* 2-line clamp (and make linter happy) */
+.brand-title--full {
   display: -webkit-box;
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+}
+.brand-title--short {
+  display: none;
+}
+
+/* На мобільному показуємо коротку, повну ховаємо */
+@media (max-width: 640px) {
+  .brand-title--full {
+    display: none;
+  }
+
+  .brand-title--short {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
 }
 
 .chip {
