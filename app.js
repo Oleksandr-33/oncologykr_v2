@@ -7,12 +7,14 @@ const routes = {
   home: 'pages/home.html',
   about: 'pages/about.html',
   doctors: 'pages/doctors.html',
+  services: 'pages/services.html',
   404: 'pages/404.html',
 };
 
 /* ---------- HELPERS ---------- */
 function getMain() {
-  return document.querySelector('main');
+  // Контейнер, куди підвантажуються partial-сторінки
+  return document.getElementById('content');
 }
 
 function getRoute() {
@@ -23,7 +25,6 @@ function abs(path) {
   return new URL(path, document.baseURI).toString();
 }
 
-/* ---------- FADE-IN (repeatable + a11y) ---------- */
 function initFadeIn(root = document) {
   const items = root.querySelectorAll('.fade-in');
   if (!items.length) return;
@@ -34,76 +35,26 @@ function initFadeIn(root = document) {
     return;
   }
 
-  /* Скидаємо стан, щоб анімація повторювалась після кожного завантаження partial */
+  /* ⬇️ ВАЖЛИВО: скидаємо стан, щоб анімація повторювалась */
   items.forEach((el) => el.classList.remove('is-visible'));
 
+  /* IntersectionObserver */
   const observer = new IntersectionObserver(
     (entries, obs) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
+
         entry.target.classList.add('is-visible');
-        obs.unobserve(entry.target);
+        obs.unobserve(entry.target); // один раз на елемент
       });
     },
-    { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+    {
+      threshold: 0.15,
+      rootMargin: '0px 0px -40px 0px',
+    }
   );
 
   items.forEach((el) => observer.observe(el));
-}
-
-/* ---------- MOBILE MENU (hamburger) ---------- */
-/* Працює з HTML:
-   - header.site-header
-   - button#menu-toggle (aria-controls="mobile-menu")
-   - div#mobile-menu [hidden]
-   - меню містить <a href="#/..."> ...
-*/
-function initMobileMenu() {
-  const header = document.querySelector('.site-header');
-  const btn = document.getElementById('menu-toggle');
-  const menu = document.getElementById('mobile-menu');
-
-  if (!header || !btn || !menu) return;
-
-  const openMenu = () => {
-    header.classList.add('is-menu-open');
-    menu.hidden = false;
-    btn.setAttribute('aria-expanded', 'true');
-    btn.setAttribute('aria-label', 'Закрити меню');
-  };
-
-  const closeMenu = () => {
-    header.classList.remove('is-menu-open');
-    menu.hidden = true;
-    btn.setAttribute('aria-expanded', 'false');
-    btn.setAttribute('aria-label', 'Відкрити меню');
-  };
-
-  const toggleMenu = () => {
-    const isOpen = !menu.hidden;
-    isOpen ? closeMenu() : openMenu();
-  };
-
-  /* Клік по кнопці */
-  btn.addEventListener('click', toggleMenu);
-
-  /* Закривати по кліку на пункт меню */
-  menu.addEventListener('click', (e) => {
-    const link = e.target.closest('a[href^="#/"]');
-    if (!link) return;
-    closeMenu();
-  });
-
-  /* Закривати по Escape */
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
-  });
-
-  /* Закривати при зміні маршруту (Back/Forward теж) */
-  window.addEventListener('hashchange', closeMenu);
-
-  /* Експорт в window, якщо захочеш викликати вручну */
-  window.__closeMobileMenu = closeMenu;
 }
 
 /* ---------- NAV ACTIVE ---------- */
@@ -114,6 +65,53 @@ function updateActiveNav(route) {
     r === route
       ? a.setAttribute('aria-current', 'page')
       : a.removeAttribute('aria-current');
+  });
+}
+
+/* ---------- MOBILE NAV ---------- */
+function setMobileNavOpen(isOpen) {
+  const html = document.documentElement;
+  const btn = document.getElementById('nav-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  if (!btn || !mobileNav) return;
+
+  html.classList.toggle('nav-open', isOpen);
+  btn.setAttribute('aria-expanded', String(isOpen));
+  btn.setAttribute('aria-label', isOpen ? 'Закрити меню' : 'Відкрити меню');
+}
+
+function initMobileNav() {
+  const btn = document.getElementById('nav-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  if (!btn || !mobileNav) return;
+
+  // Toggle по кліку
+  btn.addEventListener('click', () => {
+    const isOpen = document.documentElement.classList.contains('nav-open');
+    setMobileNavOpen(!isOpen);
+  });
+
+  // Закривати меню після вибору пункту
+  mobileNav.addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (!a) return;
+    setMobileNavOpen(false);
+  });
+
+  // ESC — закрити
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    setMobileNavOpen(false);
+  });
+
+  // Клік поза меню — закрити (лише коли відкрите)
+  document.addEventListener('click', (e) => {
+    const isOpen = document.documentElement.classList.contains('nav-open');
+    if (!isOpen) return;
+
+    const inHeader = e.target.closest('.site-header');
+    if (inHeader) return;
+    setMobileNavOpen(false);
   });
 }
 
@@ -128,10 +126,10 @@ async function loadPage(route) {
     const res = await fetch(abs(file), { cache: 'no-store' });
     if (!res.ok) throw new Error(res.status);
 
-    /* 1) ВСТАВЛЯЄМО HTML */
+    // ⬇️ 1. ВСТАВЛЯЄМО HTML
     main.innerHTML = await res.text();
 
-    /* 2) АКТИВУЄМО fade-in для щойно вставленого контенту */
+    // ⬇️ 2. ОДРАЗУ ПІСЛЯ ЦЬОГО — АКТИВУЄМО fade-in
     initFadeIn(main);
   } catch (e) {
     main.innerHTML = `
@@ -142,6 +140,9 @@ async function loadPage(route) {
   }
 
   updateActiveNav(route);
+
+  // UX: якщо мобільне меню відкрите — закриваємо після навігації
+  setMobileNavOpen(false);
 }
 
 /* ---------- ROUTER ---------- */
@@ -181,11 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
     applyTheme(cur === 'dark' ? 'light' : 'dark');
   });
 
-  /* hamburger menu */
-  initMobileMenu();
-
   /* router */
   window.addEventListener('hashchange', router);
   if (!location.hash) location.hash = '#/home';
   router();
+
+  /* mobile nav */
+  initMobileNav();
 });

@@ -1,247 +1,369 @@
-/* =========================
-   Theme tokens
-   ========================= */
+/* ==========================================================
+   Global tokens (Light default) + Dark theme (blue-graphite)
+   ========================================================== */
 
-/* Світла тема (за замовчуванням) */
 :root {
-  --color-bg: #ffffff;
-  --color-text: #000000;
-  --color-border: #cccccc;
-  --color-accent: #0077cc;
-
   /* Layout */
-  --container-max: 1200px;
-  --container-pad: 1rem;
+  --container-max: 1200px; /* max width for readable content */
+  --container-pad: clamp(14px, 2vw, 28px); /* safe side padding */
+  --section-pad-y: clamp(20px, 3vw, 36px);
 
-  /* Header */
-  --header-height: 92px; /* fallback; JS може не знадобитись */
+  /* Typography */
+  --font-sans: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --text-size: clamp(15px, 0.3vw + 14px, 17px); /* comfortable reading */
+  --text-leading: 1.6;
+
+  /* Light theme */
+  --color-bg: #ffffff;
+  --color-surface: #f6f8fb;
+  --color-text: #0b1220;
+  --color-muted: #4b5563;
+  --color-border: #d7dde7;
+  --color-accent: #0b5f66; /* корпоративний бірюзовий */
+  --color-accent-2: #2563eb;
+  --shadow: 0 10px 30px color-mix(in srgb, #000 10%, transparent);
 }
 
-/* Темна тема */
-html[data-theme='dark'] {
-  /* Фон: дуже темний синьо-графітовий (не чорний) */
-  --color-bg: #0f172a; /* slate-900 */
-
-  /* Текст: м'який, комфортний для читання */
-  --color-text: #e5e7eb; /* gray-200 */
-
-  /* Межі/розділювачі: ненав'язливі */
-  --color-border: #334155; /* slate-700 */
-
-  /* Акцент: спокійний медичний синій */
-  --color-accent: #38bdf8; /* sky-400 */
+/* Dark theme (НЕ чорний — синьо‑графітовий) */
+[data-theme='dark'] {
+  --color-bg: #0b1220; /* very dark blue-graphite */
+  --color-surface: #0f1a2b; /* raised surface */
+  --color-text: #e7eefc;
+  --color-muted: #b3c0da;
+  --color-border: #22304a;
+  --color-accent: #36c2c7; /* soft teal */
+  --color-accent-2: #7aa7ff;
+  --shadow: 0 12px 36px color-mix(in srgb, #000 35%, transparent);
 }
 
-/* =========================
-   Base
-   ========================= */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+/* ===================
+   Base / Reset
+   =================== */
 
 html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--color-bg); /* fallback */
-  background: color-mix(in srgb, var(--color-bg) 92%, transparent);
-  color: var(--color-text);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  line-height: 1.6;
 }
 
-/* Компенсація fixed header */
+html {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-size);
+  line-height: var(--text-leading);
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  padding-top: var(--header-height);
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 img {
   max-width: 100%;
   height: auto;
-  display: block;
 }
 
 a {
   color: inherit;
 }
 
-:focus-visible {
-  outline: 3px solid var(--color-accent);
-  outline-offset: 2px;
+/* Prevent weird horizontal scroll from full-bleed elements */
+body {
+  overflow-x: clip;
 }
 
-/* =========================
-   Layout helpers
-   ========================= */
+/* ===================
+   Container & spacing
+   =================== */
+
 .container {
   max-width: var(--container-max);
   margin: 0 auto;
-  padding: 0 var(--container-pad);
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
 }
 
-/* Full-width секції: фон/медіа на всю ширину екрана */
+main {
+  /* main is a shell; partials control layout */
+  min-height: 55vh;
+}
+
+.page {
+  padding: var(--section-pad-y) 0 calc(var(--section-pad-y) + 12px);
+}
+
+/* Full-width section that still keeps safe side padding */
 .full-width {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  width: 100%;
 }
 
-/* Full-width секція з безпечними відступами від країв екрана */
 .full-width--padded {
-  padding-left: clamp(12px, 2vw, 24px);
-  padding-right: clamp(12px, 2vw, 24px);
+  padding-left: var(--container-pad);
+  padding-right: var(--container-pad);
 }
 
-/* Щоб full-width блоки не виглядали “пласкими” */
 .full-width--soft {
   padding-top: clamp(12px, 2vw, 20px);
   padding-bottom: clamp(12px, 2vw, 20px);
 }
 
-main {
-  padding: 1rem 0;
-}
+/* ===================
+   Header / Nav
+   =================== */
 
-#content {
-  padding-top: 1rem;
-}
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 
-footer {
-  background: var(--color-bg); /* fallback */
   background: color-mix(in srgb, var(--color-bg) 92%, transparent);
-  color: var(--color-text);
-  border-top: 1px solid var(--color-border);
-  text-align: left;
-  padding: 1rem 0;
-  font-size: 0.9rem;
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: blur(10px);
 }
 
-/* =========================
-   Legacy/simple nav (якщо десь ще використовується)
-   ========================= */
-.header-container,
-.footer-container {
-  display: flex;
+.header-inner {
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  padding-bottom: 14px;
 }
 
-.logo {
-  font-size: 1.5rem;
+@media (min-width: 860px) {
+  .header-inner {
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+  }
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.brand-domain {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.brand-title {
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0;
+  font-size: clamp(15px, 1.3vw + 10px, 20px);
+
+  /* 2-line clamp (and make linter happy) */
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  text-decoration: none;
   font-weight: 700;
-  margin: 0.5rem 0;
+  white-space: nowrap;
 }
 
-nav .menu {
+.chip:hover {
+  border-color: color-mix(in srgb, var(--color-border) 40%, var(--color-accent));
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.icon-btn:hover {
+  border-color: color-mix(in srgb, var(--color-border) 40%, var(--color-accent));
+}
+
+.icon-btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Desktop nav */
+.site-nav {
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .site-nav {
+    display: block;
+  }
+}
+
+.menu {
+  display: flex;
+  gap: 14px;
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  gap: 1rem;
+  align-items: center;
 }
 
-nav .menu a {
+.menu a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 12px;
   text-decoration: none;
   color: var(--color-text);
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
 }
 
-nav .menu a:hover {
-  background: color-mix(in srgb, var(--color-border) 35%, transparent);
+.menu a:hover {
+  background: color-mix(in srgb, var(--color-surface) 65%, transparent);
 }
 
-nav .menu a.active {
-  border-bottom: 2px solid var(--color-accent);
-  font-weight: 700;
+.menu a.active,
+.menu a[aria-current='page'] {
+  background: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 26%, var(--color-border));
 }
 
-#theme-toggle {
-  margin-left: 1rem;
-  font-size: 1.2rem;
-  background: transparent;
-  border: 2px solid var(--color-border);
-  border-radius: 10px;
-  padding: 0.25rem 0.5rem;
-  cursor: pointer;
+/* Mobile menu (drawer) */
+.nav-toggle {
+  display: inline-flex;
+}
+
+@media (min-width: 860px) {
+  .nav-toggle {
+    display: none;
+  }
+}
+
+.mobile-drawer {
+  display: none;
+  border-top: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-bg) 92%, transparent);
+}
+
+body.nav-open .mobile-drawer {
+  display: block;
+}
+
+.mobile-menu {
+  list-style: none;
+  margin: 0;
+  padding: 12px 0 16px;
+  display: grid;
+  gap: 6px;
+}
+
+.mobile-menu a {
+  display: flex;
+  padding: 12px 14px;
+  border-radius: 12px;
+  text-decoration: none;
+}
+
+.mobile-menu a:hover {
+  background: color-mix(in srgb, var(--color-surface) 65%, transparent);
+}
+
+/* ===================
+   Footer
+   =================== */
+
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-bg) 96%, transparent);
+}
+
+.footer-inner {
+  padding: 28px 0;
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 860px) {
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.footer-title {
+  margin: 0 0 6px;
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+.footer-meta {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.footer-list {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: var(--color-muted);
+}
+
+.footer-list a {
   color: var(--color-text);
 }
 
-#theme-toggle:hover {
-  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-  border-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
-}
-
-#theme-toggle:focus {
-  outline: none;
-}
-
-/* =========================
-   Doctors / 404
-   ========================= */
-.doctors-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-}
-
-.doctor-card {
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
-  padding: 1rem;
-  background: var(--color-bg);
-}
-
-.doctor-card h3 {
-  margin-top: 0;
-}
-
-.doctor-card p {
-  margin: 0.5em 0;
+.footer-copy {
+  color: var(--color-muted);
   font-size: 0.95rem;
 }
 
-.not-found {
-  text-align: center;
-  padding: 2rem;
-}
-
-.not-found h2 {
-  font-size: 2rem;
-}
-
-/* =========================
-   Home page (no Tailwind)
-   ========================= */
-.page {
-  padding: 24px 0 56px;
-}
+/* ===================
+   Components (Home)
+   =================== */
 
 .page-hero {
-  margin: 16px 0 18px;
+  margin: 10px 0 18px;
 }
 
 .page-title {
-  font-size: clamp(22px, 2.4vw, 40px);
-  line-height: 1.15;
+  font-size: clamp(24px, 2.6vw, 44px);
+  line-height: 1.12;
   letter-spacing: -0.02em;
   margin: 0 0 10px;
 }
 
 .page-subtitle {
-  margin: 0 0 18px;
-  color: color-mix(in srgb, var(--color-text) 65%, transparent);
+  margin: 0;
+  color: var(--color-muted);
   font-size: 1rem;
 }
 
 .hero-media {
   border: 1px solid var(--color-border);
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
-  background: var(--color-bg);
-  box-shadow: 0 10px 30px color-mix(in srgb, #000 12%, transparent);
+  background: var(--color-surface);
+  box-shadow: var(--shadow);
 }
 
 .hero-media img {
@@ -270,14 +392,18 @@ nav .menu a.active {
   align-items: center;
   justify-content: center;
   gap: 10px;
+
   padding: 14px 16px;
   border-radius: 14px;
   border: 1px solid var(--color-border);
+
   text-decoration: none;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.2;
+
   color: var(--color-text);
-  background: var(--color-bg);
+  background: color-mix(in srgb, var(--color-surface) 65%, transparent);
+
   box-shadow: 0 2px 10px color-mix(in srgb, #000 10%, transparent);
   transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease,
     border-color 160ms ease;
@@ -286,19 +412,16 @@ nav .menu a.active {
 .btn:hover {
   transform: translateY(-1px);
   box-shadow: 0 10px 24px color-mix(in srgb, #000 14%, transparent);
-  border-color: color-mix(
-    in srgb,
-    var(--color-border) 40%,
-    var(--color-accent)
-  );
+  border-color: color-mix(in srgb, var(--color-border) 40%, var(--color-accent));
 }
 
 .btn:active {
   transform: translateY(0);
 }
 
-.btn:focus {
-  outline: none;
+.btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .btn--primary {
@@ -308,7 +431,7 @@ nav .menu a.active {
 }
 
 .btn--outline {
-  background: var(--color-bg);
+  background: color-mix(in srgb, var(--color-surface) 65%, transparent);
 }
 
 .btn--accent {
@@ -323,16 +446,18 @@ nav .menu a.active {
 }
 
 .block-title {
-  font-size: 1.5rem;
+  font-size: clamp(18px, 1.4vw + 12px, 26px);
   margin: 0 0 14px;
+  letter-spacing: -0.01em;
 }
 
 .map-card {
   position: relative;
   border: 1px solid var(--color-border);
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
-  background: var(--color-bg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow);
 }
 
 .map-embed {
@@ -347,12 +472,14 @@ nav .menu a.active {
   top: 14px;
   right: 14px;
   max-width: 320px;
-  background: color-mix(in srgb, var(--color-bg) 94%, transparent);
+
+  background: color-mix(in srgb, var(--color-bg) 92%, transparent);
   border: 1px solid var(--color-border);
   border-radius: 12px;
-  padding: 12px 12px;
+  padding: 12px;
+
   box-shadow: 0 8px 24px color-mix(in srgb, #000 12%, transparent);
-  font-size: 0.92rem;
+  font-size: 0.95rem;
 }
 
 .map-note p {
@@ -371,11 +498,10 @@ nav .menu a.active {
 
 .map-coords p {
   margin: 0;
-  font-size: 0.92rem;
-  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+  font-size: 0.95rem;
+  color: var(--color-muted);
 }
 
-/* ✅ FIX: qr-grid був зламаний у файлі — відновлено */
 .qr-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -385,300 +511,78 @@ nav .menu a.active {
 
 @media (min-width: 720px) {
   .qr-grid {
-    grid-template-columns: 220px 1fr;
+    grid-template-columns: 240px 1fr;
+    gap: 18px;
   }
 }
 
 .qr-figure {
   margin: 0;
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
+  border-radius: 16px;
   overflow: hidden;
-  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  background: #fff;
+  width: fit-content;
+  box-shadow: 0 10px 24px color-mix(in srgb, #000 10%, transparent);
 }
 
 .qr-figure img {
-  width: 100%;
-  height: auto;
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
   display: block;
 }
 
 .qr-subtitle {
   margin: 0 0 10px;
   font-size: 1.05rem;
+  font-weight: 800;
 }
 
 .list {
   margin: 0;
   padding-left: 18px;
+  color: var(--color-muted);
 }
 
-.list li {
-  margin: 0 0 8px;
-  color: color-mix(in srgb, var(--color-text) 85%, transparent);
+/* ===================
+   Doctors grid
+   =================== */
+
+.doctors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
 }
 
-/* Fade-in */
+.doctor-card {
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 16px;
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  box-shadow: 0 10px 24px color-mix(in srgb, #000 10%, transparent);
+}
+
+.doctor-card h3 {
+  margin: 0 0 10px;
+}
+
+.doctor-card p {
+  margin: 8px 0;
+  color: var(--color-muted);
+}
+
+/* ===================
+   Fade-in (repeatable)
+   =================== */
+
 .fade-in {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 600ms ease, transform 600ms ease;
+  transition: opacity 420ms ease, transform 420ms ease;
 }
 
 .fade-in.is-visible {
   opacity: 1;
   transform: none;
-}
-
-/* =========================
-   Header (fixed, stable)
-   ========================= */
-.site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-
-  /* fallback, якщо color-mix не підтримується */
-  background: rgba(255, 255, 255, 0.92);
-
-  /* сучасні браузери: трохи “скляності” від змінних теми */
-  background: color-mix(in srgb, var(--color-bg) 94%, transparent);
-  border-bottom: 1px solid var(--color-border);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-/* у темній темі підкручуємо fallback */
-html[data-theme='dark'] .site-header {
-  background: rgba(15, 23, 42, 0.94); /* #0f172a */
-}
-
-/* Контейнер хедера */
-.header-inner {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 14px;
-  align-items: center;
-
-  /* ⬇️ ПРЕМІУМ SAFE-AREA PADDING */
-  padding-top: 14px;
-  padding-bottom: 14px;
-  padding-left: calc(var(--container-pad) + env(safe-area-inset-left));
-  padding-right: calc(var(--container-pad) + env(safe-area-inset-right));
-
-  min-height: var(--header-height);
-}
-
-@media (max-width: 420px) {
-  .header-inner {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-  }
-}
-
-/* Бренд */
-.brand {
-  display: grid;
-  gap: 2px;
-  text-decoration: none;
-  color: inherit;
-  min-width: 0;
-}
-
-.brand-domain {
-  font-size: 0.85rem;
-  color: color-mix(in srgb, var(--color-text) 70%, transparent);
-}
-
-.brand-title {
-  font-weight: 800;
-  line-height: 1.15;
-
-  display: -webkit-box;
-
-  line-clamp: 2; /* стандарт (на майбутнє) */
-  -webkit-line-clamp: 2; /* реальна підтримка зараз */
-
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Дії справа */
-.header-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.call-btn {
-  text-decoration: none;
-  font-weight: 700;
-  color: var(--color-bg);
-  background: var(--color-text);
-  border: 1px solid
-    color-mix(in srgb, var(--color-text) 70%, var(--color-border));
-  padding: 10px 12px;
-  border-radius: 12px;
-  white-space: nowrap;
-}
-
-.call-btn:hover {
-  filter: brightness(0.95);
-}
-
-.call-btn:focus {
-  outline: none;
-}
-
-/* Темна тема: кнопка дзвінка контрастна, але м'яка */
-html[data-theme='dark'] .call-btn {
-  background: #e5e7eb;
-  color: #0f172a;
-}
-.icon-btn {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  border: 1px solid var(--color-border);
-  background: var(--color-bg); /* fallback */
-  background: color-mix(in srgb, var(--color-bg) 92%, transparent);
-  color: var(--color-text);
-  display: inline-grid;
-  place-items: center;
-  cursor: pointer;
-}
-
-.icon-btn:hover {
-  background: color-mix(in srgb, var(--color-accent) 10%, transparent);
-  border-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
-}
-
-.icon-btn:focus {
-  outline: none;
-}
-
-/* На малих екранах ховаємо телефон, щоб не ламало */
-@media (max-width: 520px) {
-  .call-btn {
-    display: none;
-  }
-}
-
-/* =========================
-   Hamburger menu
-   ========================= */
-.menu-btn {
-  width: 46px;
-}
-
-.menu-icon {
-  width: 20px;
-  height: 14px;
-  position: relative;
-  display: inline-block;
-  box-shadow: 0 6px 0 0 var(--color-text);
-  transition: box-shadow 180ms ease;
-}
-
-.menu-icon::before,
-.menu-icon::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 20px;
-  height: 2px;
-  background: var(--color-text);
-  border-radius: 2px;
-  transition: transform 180ms ease, top 180ms ease, opacity 180ms ease;
-}
-
-.menu-icon::before {
-  top: 1px;
-}
-.menu-icon::after {
-  top: 11px;
-}
-
-.site-header.is-menu-open .menu-icon {
-  box-shadow: 0 0 0 0 transparent;
-}
-
-.site-header.is-menu-open .menu-icon::before {
-  top: 6px;
-  transform: rotate(45deg);
-}
-
-.site-header.is-menu-open .menu-icon::after {
-  top: 6px;
-  transform: rotate(-45deg);
-}
-
-/* Мобільне меню під хедером */
-.mobile-menu {
-  border-top: 1px solid var(--color-border);
-  background: color-mix(in srgb, var(--color-bg) 96%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.mobile-nav {
-  display: grid;
-  gap: 6px;
-  padding: 10px 0 12px;
-}
-
-.mobile-nav .nav-link {
-  padding: 12px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--color-border);
-  text-decoration: none;
-}
-
-/* Active стан для мобільних посилань теж */
-.nav-link.active,
-.nav-link[aria-current='page'] {
-  background: color-mix(in srgb, var(--color-accent) 16%, transparent);
-  border-color: color-mix(in srgb, var(--color-accent) 45%, transparent);
-}
-
-@media (min-width: 981px) {
-  #mobile-menu {
-    display: none !important;
-  }
-  #menu-toggle {
-    display: none !important;
-  }
-}
-
-/* =========================
-   Small screens (general)
-   ========================= */
-@media (max-width: 600px) {
-  .logo {
-    font-size: 1.2rem;
-  }
-  nav .menu {
-    gap: 0.5rem;
-  }
-  #theme-toggle {
-    font-size: 1rem;
-    padding: 0.25rem;
-  }
-}
-
-/* Desktop навігація */
-.nav.desktop-nav {
-  display: none;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Показуємо desktop-меню на ширших екранах */
-@media (min-width: 981px) {
-  .nav.desktop-nav {
-    display: flex;
-  }
 }

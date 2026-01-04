@@ -1,120 +1,117 @@
 <!DOCTYPE html>
 <html lang="uk" data-theme="light">
-  <!-- Атрибут data-theme за замовчуванням на "light" -->
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- favicon (за замовчуванням світла) -->
-    <link id="site-favicon" rel="icon" href="favicon.ico" />
+    <link id="site-favicon" rel="icon" href="/favicon.ico" />
 
     <!-- manifest (PWA) -->
-    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="manifest" href="/manifest.webmanifest" />
 
     <!-- (опційно) для iOS ярлика -->
-    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
 
     <!-- колір “шапки” браузера на мобільних -->
     <meta name="theme-color" content="#0b5f66" />
 
-    <title>Криворізький онкодиспансер - Головна</title>
+    <title>КНТ «Криворізький онкологічний диспансер» ДОР</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- Шапка сайту з логотипом та навігацією -->
-    <header class="site-header" role="banner">
+    <!-- Шапка сайту (sticky) -->
+    <header class="site-header">
       <div class="container header-inner">
         <!-- Бренд -->
-        <a class="brand" href="#/home" aria-label="Перейти на головну">
+        <a class="brand" href="#/home" aria-label="На головну">
           <span class="brand-domain">oncologykr.com</span>
           <span class="brand-title">
-            КНТ «Криворізький онкологічний диспансер» Дніпропетровської обласної
-            ради»
+            КОМУНАЛЬНЕ НЕКОМЕРЦІЙНЕ ТОВАРИСТВО "КРИВОРІЗЬКИЙ ОНКОЛОГІЧНИЙ
+            ДИСПАНСЕР" ДНІПРОПЕТРОВСЬКОЇ ОБЛАСНОЇ РАДИ"
           </span>
         </a>
 
-        <!-- Desktop меню (видиме на ПК/планшеті) -->
-        <nav class="nav desktop-nav" aria-label="Основна навігація">
-          <a class="nav-link" href="#/home">Головна</a>
-          <a class="nav-link" href="#/about">Про нас</a>
-          <a class="nav-link" href="#/doctors">Лікарі</a>
+        <!-- Навігація (desktop) -->
+        <nav class="site-nav" aria-label="Навігація сайту">
+          <ul class="menu">
+            <li><a href="#/home" id="nav-home">Головна</a></li>
+            <li><a href="#/about" id="nav-about">Про нас</a></li>
+            <li><a href="#/doctors" id="nav-doctors">Лікарі</a></li>
+          </ul>
         </nav>
 
-        <!-- Дії справа -->
+        <!-- Дії -->
         <div class="header-actions">
           <a
-            class="call-btn"
+            class="header-phone"
             href="tel:+380564054547"
-            aria-label="Зателефонувати: (056) 405-45-47"
+            aria-label="Зателефонувати"
           >
             (056) 405-45-47
           </a>
 
           <button
             id="theme-toggle"
-            class="icon-btn"
+            class="theme-toggle"
             type="button"
-            aria-label="Перемкнути тему"
-            title="Перемкнути тему"
+            aria-label="Перемикнути тему"
           >
             🌙
           </button>
 
-          <!-- Гамбургер (видимий на мобільних) -->
+          <!-- Гамбургер (mobile) -->
           <button
-            id="menu-toggle"
-            class="icon-btn menu-btn"
+            id="nav-toggle"
+            class="nav-toggle"
             type="button"
             aria-label="Відкрити меню"
-            aria-controls="mobile-menu"
             aria-expanded="false"
+            aria-controls="mobile-nav"
           >
-            <span class="menu-icon" aria-hidden="true"></span>
+            <span class="nav-toggle-lines" aria-hidden="true"></span>
           </button>
         </div>
       </div>
 
-      <!-- Мобільне меню (під хедером) -->
-      <div id="mobile-menu" class="mobile-menu" hidden>
-        <nav class="mobile-nav" aria-label="Мобільна навігація">
-          <a class="nav-link" href="#/home">Головна</a>
-          <a class="nav-link" href="#/about">Про нас</a>
-          <a class="nav-link" href="#/doctors">Лікарі</a>
-        </nav>
-      </div>
+      <!-- Мобільне меню -->
+      <nav id="mobile-nav" class="mobile-nav" aria-label="Мобільне меню">
+        <div class="container mobile-nav-inner">
+          <a class="mobile-link" href="#/home">Головна</a>
+          <a class="mobile-link" href="#/about">Про нас</a>
+          <a class="mobile-link" href="#/doctors">Лікарі</a>
+        </div>
+      </nav>
     </header>
 
     <!-- Основний контейнер для динамічного контенту сторінок -->
-    <main id="content"></main>
+    <main id="content" class="site-main">
+      <!-- Початковий контент можна залишити порожнім; буде завантажено через JS -->
+      <noscript
+        >Будь ласка, увімкніть JavaScript для перегляду вмісту.</noscript
+      >
+    </main>
 
     <!-- Футер сайту -->
-    <footer>
-      <div class="container footer-container">
-        <!-- Контактна інформація -->
-        <section class="footer-contacts">
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-block">
           <h2 class="footer-title">Контактна інформація</h2>
-
           <ul class="footer-list">
+            <li>Адреса: м. Кривий Ріг, Дніпровське шосе, 41</li>
             <li>
-              <strong>Адреса:</strong>
-              <span>м. Кривий Ріг, Дніпровське шосе, 41</span>
-            </li>
-
-            <li>
-              <strong>Телефони реєстратури:</strong>
+              Телефони реєстратури:
               <a href="tel:+380989050987">(098) 905-09-87</a>,
               <a href="tel:+380564054547">(056) 405-45-47</a>
             </li>
-
             <li>
-              <strong>Email:</strong>
+              Email:
               <a href="mailto:onkoriad@gmail.com">onkoriad@gmail.com</a>
             </li>
           </ul>
-        </section>
+        </div>
 
-        <!-- Копірайт -->
         <p class="footer-copy">
-          &copy; 2026 КНТ "Криворізький ОД" ДОР". Всі права захищено.
+          &copy; 2026 КНТ «Криворізький ОД» ДОР». Всі права захищено.
         </p>
       </div>
     </footer>
