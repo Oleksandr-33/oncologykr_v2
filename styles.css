@@ -515,7 +515,7 @@ main {
   padding: 18px;
   border-radius: 16px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 21px;
   cursor: pointer;
   transition: 0.2s ease;
   text-align: center;
@@ -1032,4 +1032,28 @@ html[data-theme='dark'] .theme-ic--moon {
 /* When modal is open, prevent background page from scrolling */
 html.modal-open {
   overflow: hidden;
+}
+
+.about-intro {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+  padding-block: 1rem;
+}
+
+.lead-paragraph {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 1.2rem;
+}
+
+.about-intro p + p {
+  margin-top: 1rem;
+}
+
+.container {
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: 16px;
 }
