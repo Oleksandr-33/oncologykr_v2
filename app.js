@@ -123,18 +123,11 @@ async function loadPage(route) {
   const file = routes[route] || routes['404'];
 
   /* === CLEANUP BEFORE PAGE LOAD (SPA safety) === */
-  // 1) На всякий випадок повертаємо скрол (модалки могли залишити overflow:hidden)
-  document.body.style.overflow = '';
-
-  // 2) Закрити PDF-модалку (Doctors: наказ), якщо була відкрита
+  // 1) Закрити PDF-модалку (Doctors: наказ), якщо була відкрита
   closePdfModal();
 
-  // 3) Закрити About-модалку, якщо була відкрита
-  const aboutModal = document.getElementById('aboutModal');
-  if (aboutModal) {
-    aboutModal.classList.remove('is-open');
-    aboutModal.setAttribute('aria-hidden', 'true');
-  }
+  // 2) Закрити Content-модалку (About: відділення), якщо була відкрита
+  closeContentModal();
 
   try {
     const res = await fetch(abs(file), { cache: 'no-store' });
@@ -143,10 +136,10 @@ async function loadPage(route) {
     // ⬇️ 1. ВСТАВЛЯЄМО HTML
     main.innerHTML = await res.text();
 
-    /* === CLEANUP AFTER PAGE LOAD (safety net) === */
-    document.body.style.overflow = '';
+    // ⬇️ 2. ПРОКРУЧУЄМО СТОРІНКУ ВГОРУ (UX для SPA навігації)
+    window.scrollTo({ top: 0, behavior: 'instant' });
 
-    // ⬇️ 2. ОДРАЗУ ПІСЛЯ ЦЬОГО — АКТИВУЄМО fade-in
+    // ⬇️ 3. ОДРАЗУ ПІСЛЯ ЦЬОГО — АКТИВУЄМО fade-in
     initFadeIn(main);
   } catch (e) {
     main.innerHTML = `
@@ -174,7 +167,7 @@ function openPdfModal(src) {
   frame.src = abs(src);
   modal.classList.add('is-open');
   modal.setAttribute('aria-hidden', 'false');
-  document.body.style.overflow = 'hidden';
+  document.documentElement.classList.add('modal-open'); // lock page scroll
 
   // фокус на кнопку закриття (зручно з клавіатури)
   modal.querySelector('[data-close]')?.focus();
@@ -188,7 +181,7 @@ function closePdfModal() {
   frame.src = '';
   modal.classList.remove('is-open');
   modal.setAttribute('aria-hidden', 'true');
-  document.body.style.overflow = '';
+  document.documentElement.classList.remove('modal-open'); // re-enable page scroll
 }
 
 function initPdfModal() {
@@ -217,7 +210,20 @@ function initPdfModal() {
   });
 }
 
-function initAboutModal() {
+/* ===============================
+   CONTENT MODAL (About: відділення)
+   =============================== */
+
+// Helper function to close content modal (used by router cleanup)
+function closeContentModal() {
+  const modal = document.getElementById('contentModal');
+  if (!modal) return;
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.documentElement.classList.remove('modal-open'); // re-enable page scroll
+}
+
+function initContentModal() {
   // Cache references to modal elements
   function getParts() {
     const modal = document.getElementById('contentModal');
@@ -246,15 +252,6 @@ function initAboutModal() {
     modal.querySelector('.content-close')?.focus();
   }
 
-  // Close the modal and reset state
-  function closeModal() {
-    const { modal } = getParts();
-    if (!modal) return;
-    modal.classList.remove('is-open');
-    modal.setAttribute('aria-hidden', 'true');
-    document.documentElement.classList.remove('modal-open'); // re-enable page scroll
-  }
-
   // Event delegation for opening/closing the modal
   document.addEventListener('click', (e) => {
     const openBtn = e.target.closest('[data-modal-open]');
@@ -267,14 +264,14 @@ function initAboutModal() {
     }
     if (closeBtn) {
       e.preventDefault();
-      closeModal();
+      closeContentModal();
     }
   });
 
   // Close modal on ESC key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      closeModal();
+      closeContentModal();
     }
   });
 }
@@ -335,34 +332,6 @@ function applyTheme(theme) {
   }
 }
 
-document.addEventListener('click', (e) => {
-  const trigger = e.target.closest('.section-trigger');
-  const close = e.target.closest('[data-close]');
-
-  const modal = document.getElementById('contentModal');
-  const body = document.getElementById('contentModalBody');
-
-  // Відкрити
-  if (trigger) {
-    const key = trigger.dataset.section;
-    const tpl = document.getElementById(`section-${key}`);
-    if (!tpl) return;
-
-    body.innerHTML = tpl.innerHTML;
-    modal.classList.add('is-open');
-    modal.setAttribute('aria-hidden', 'false');
-    document.documentElement.classList.add('modal-open');
-  }
-
-  // Закрити
-  if (close) {
-    modal.classList.remove('is-open');
-    modal.setAttribute('aria-hidden', 'true');
-    body.innerHTML = '';
-    document.documentElement.classList.remove('modal-open');
-  }
-});
-
 /* ---------- INIT ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   // theme
@@ -382,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // mobile nav
   initMobileNav();
 
-  // pdf modal
+  // modals
   initPdfModal();
-  initAboutModal();
+  initContentModal();
 });
