@@ -115,6 +115,29 @@ function initMobileNav() {
   });
 }
 
+/* ---------- SCROLL TO TOP ---------- */
+function scrollToTop() {
+  // Метод 1: Стандартний window.scrollTo (працює на більшості пристроїв)
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  // Метод 2: Fallback для старих браузерів
+  window.scrollTo(0, 0);
+
+  // Метод 3: Scroll на document.documentElement (для деяких Android браузерів)
+  document.documentElement.scrollTop = 0;
+
+  // Метод 4: Scroll на document.body (для Safari iOS та деяких Android браузерів)
+  document.body.scrollTop = 0;
+
+  // Метод 5: requestAnimationFrame для затримки на 1 кадр (для Android Chrome)
+  // Це допомагає, коли DOM ще рендериться
+  requestAnimationFrame(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  });
+}
+
 /* ---------- PAGE LOADER ---------- */
 async function loadPage(route) {
   const main = getMain();
@@ -137,7 +160,8 @@ async function loadPage(route) {
     main.innerHTML = await res.text();
 
     // ⬇️ 2. ПРОКРУЧУЄМО СТОРІНКУ ВГОРУ (UX для SPA навігації)
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    // Використовуємо кілька методів для надійності на Android
+    scrollToTop();
 
     // ⬇️ 3. ОДРАЗУ ПІСЛЯ ЦЬОГО — АКТИВУЄМО fade-in
     initFadeIn(main);
