@@ -69,6 +69,40 @@ function updateMetaTags(route) {
   if (twitterDescEl) twitterDescEl.setAttribute('content', meta.description);
 }
 
+/* ---------- ANALYTICS TRACKING ---------- */
+/**
+ * Track custom events with Plausible Analytics
+ * @param {string} eventName - Name of the event to track
+ * @param {Object} props - Optional properties to attach to the event
+ */
+function trackEvent(eventName, props = {}) {
+  // Check if Plausible is loaded (window.plausible is available when script loads)
+  if (typeof window.plausible !== 'undefined') {
+    window.plausible(eventName, { props });
+  }
+}
+
+/**
+ * Track page view for SPA navigation
+ * Plausible automatically tracks initial page load, but we need to manually
+ * track SPA route changes since URL hash changes don't trigger new page views
+ */
+function trackPageView(route) {
+  const meta = pageMeta[route] || pageMeta.home;
+
+  // Track the page view with the full URL including hash
+  if (typeof window.plausible !== 'undefined') {
+    window.plausible('pageview', {
+      u: meta.url,
+      // Optional: send the page title as well
+      props: {
+        route: route,
+        title: meta.title
+      }
+    });
+  }
+}
+
 /* ---------- HELPERS ---------- */
 function getMain() {
   // Контейнер, куди підвантажуються partial-сторінки
@@ -123,6 +157,24 @@ function updateActiveNav(route) {
     r === route
       ? a.setAttribute('aria-current', 'page')
       : a.removeAttribute('aria-current');
+  });
+}
+
+/* ---------- TRACK NAVIGATION CLICKS ---------- */
+function initNavigationTracking() {
+  // Track all navigation link clicks (both desktop and mobile)
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#/"]');
+    if (!link) return;
+
+    const route = link.getAttribute('href').replace(/^#\//, '');
+    const isMobile = link.closest('.mobile-nav') !== null;
+
+    trackEvent('Navigation Click', {
+      route: route,
+      type: isMobile ? 'mobile' : 'desktop',
+      text: link.textContent.trim()
+    });
   });
 }
 
@@ -211,6 +263,9 @@ function showLoadingBar() {
     // Імітація прогресу: 0% -> 90% за 0.5s
     bar.style.width = '90%';
   });
+
+  // Track loading bar display (indicates user navigation)
+  trackEvent('Loading Bar', { action: 'show' });
 }
 
 function hideLoadingBar() {
@@ -274,6 +329,9 @@ async function loadPage(route) {
 
   // Update meta tags for SEO
   updateMetaTags(route);
+
+  // Track page view for analytics (SPA navigation)
+  trackPageView(route);
 
   // UX: якщо мобільне меню відкрите — закриваємо після навігації
   setMobileNavOpen(false);
@@ -431,7 +489,7 @@ function setThemeColor(theme) {
   meta.setAttribute('content', THEME_COLORS[theme] || THEME_COLORS.light);
 }
 
-function applyTheme(theme) {
+function applyTheme(theme, trackAnalytics = true) {
   const safe = theme === 'dark' ? 'dark' : 'light';
 
   // 1. Встановлюємо тему на <html>
@@ -454,17 +512,22 @@ function applyTheme(theme) {
     );
     btn.title = btn.getAttribute('aria-label');
   }
+
+  // Track theme switch (only when user clicks, not on initial load)
+  if (trackAnalytics) {
+    trackEvent('Theme Switch', { theme: safe });
+  }
 }
 
 /* ---------- INIT ---------- */
 document.addEventListener('DOMContentLoaded', () => {
-  // theme
+  // theme (don't track initial load, only user clicks)
   const saved = localStorage.getItem(THEME_KEY) || 'light';
-  applyTheme(saved);
+  applyTheme(saved, false);
 
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
     const cur = document.documentElement.getAttribute('data-theme') || 'light';
-    applyTheme(cur === 'dark' ? 'light' : 'dark');
+    applyTheme(cur === 'dark' ? 'light' : 'dark', true); // track user theme switch
   });
 
   // router
@@ -478,4 +541,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // modals
   initPdfModal();
   initContentModal();
+
+  // analytics - track navigation clicks
+  initNavigationTracking();
 });
