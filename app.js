@@ -11,6 +11,64 @@ const routes = {
   404: 'pages/404.html',
 };
 
+/* ---------- SEO META DATA ---------- */
+const pageMeta = {
+  home: {
+    title: 'Онкологія Кривий Ріг - Центр онкологічної допомоги та підтримки',
+    description: 'КНТ «Криворізький онкологічний диспансер» - сучасний медичний заклад, що надає повний цикл онкологічної допомоги від діагностики до лікування та реабілітації пацієнтів.',
+    url: 'https://oncologykr.ua/#/home'
+  },
+  about: {
+    title: 'Про нас - Онкологія Кривий Ріг',
+    description: 'Інформація про відділення, команду фахівців та підхід до лікування в Криворізькому онкологічному диспансері. Сучасні методи діагностики та комплексна допомога пацієнтам.',
+    url: 'https://oncologykr.ua/#/about'
+  },
+  services: {
+    title: 'Наші послуги - Онкологія Кривий Ріг',
+    description: 'Повний перелік медичних послуг за договором з НСЗУ: хірургічні операції, діагностика, хіміотерапія, променева терапія та комплексне лікування онкологічних захворювань.',
+    url: 'https://oncologykr.ua/#/services'
+  },
+  doctors: {
+    title: 'Наші лікарі - Онкологія Кривий Ріг',
+    description: 'Експертні команди з оцінювання повсякденного функціонування особи (ЕКОПФО). Висококваліфіковані лікарі-онкологи та хірурги-онкологи Криворізького онкологічного диспансеру.',
+    url: 'https://oncologykr.ua/#/doctors'
+  },
+  404: {
+    title: '404 - Сторінку не знайдено | Онкологія Кривий Ріг',
+    description: 'Сторінку не знайдено. Перейдіть на головну сторінку Криворізького онкологічного диспансеру для отримання інформації про наші послуги та контакти.',
+    url: 'https://oncologykr.ua/#/404'
+  }
+};
+
+function updateMetaTags(route) {
+  const meta = pageMeta[route] || pageMeta.home;
+
+  // Update title
+  const titleEl = document.getElementById('page-title');
+  if (titleEl) titleEl.textContent = meta.title;
+
+  // Update meta description
+  const descEl = document.getElementById('meta-description');
+  if (descEl) descEl.setAttribute('content', meta.description);
+
+  // Update Open Graph tags
+  const ogTitleEl = document.getElementById('og-title');
+  if (ogTitleEl) ogTitleEl.setAttribute('content', meta.title);
+
+  const ogDescEl = document.getElementById('og-description');
+  if (ogDescEl) ogDescEl.setAttribute('content', meta.description);
+
+  const ogUrlEl = document.getElementById('og-url');
+  if (ogUrlEl) ogUrlEl.setAttribute('content', meta.url);
+
+  // Update Twitter Card tags
+  const twitterTitleEl = document.getElementById('twitter-title');
+  if (twitterTitleEl) twitterTitleEl.setAttribute('content', meta.title);
+
+  const twitterDescEl = document.getElementById('twitter-description');
+  if (twitterDescEl) twitterDescEl.setAttribute('content', meta.description);
+}
+
 /* ---------- HELPERS ---------- */
 function getMain() {
   // Контейнер, куди підвантажуються partial-сторінки
@@ -138,6 +196,38 @@ function scrollToTop() {
   });
 }
 
+/* ---------- LOADING BAR ---------- */
+function showLoadingBar() {
+  const bar = document.getElementById('loading-bar');
+  if (!bar) return;
+
+  // Скинути стан
+  bar.classList.remove('is-complete');
+  bar.style.width = '0%';
+
+  // Показати з початковою анімацією
+  requestAnimationFrame(() => {
+    bar.classList.add('is-loading');
+    // Імітація прогресу: 0% -> 90% за 0.5s
+    bar.style.width = '90%';
+  });
+}
+
+function hideLoadingBar() {
+  const bar = document.getElementById('loading-bar');
+  if (!bar) return;
+
+  // Завершити анімацію: 90% -> 100%
+  bar.style.width = '100%';
+  bar.classList.add('is-complete');
+
+  // Приховати через 0.3s після завершення
+  setTimeout(() => {
+    bar.classList.remove('is-loading', 'is-complete');
+    bar.style.width = '0%';
+  }, 300);
+}
+
 /* ---------- PAGE LOADER ---------- */
 async function loadPage(route) {
   const main = getMain();
@@ -152,6 +242,9 @@ async function loadPage(route) {
   // 2) Закрити Content-модалку (About: відділення), якщо була відкрита
   closeContentModal();
 
+  // 3) Показати loading bar
+  showLoadingBar();
+
   try {
     const res = await fetch(abs(file), { cache: 'no-store' });
     if (!res.ok) throw new Error(res.status);
@@ -165,15 +258,22 @@ async function loadPage(route) {
 
     // ⬇️ 3. ОДРАЗУ ПІСЛЯ ЦЬОГО — АКТИВУЄМО fade-in
     initFadeIn(main);
+
+    // ⬇️ 4. ПРИХОВАТИ loading bar після завантаження
+    hideLoadingBar();
   } catch (e) {
     main.innerHTML = `
       <section style="padding:32px">
         <h2>Помилка завантаження</h2>
         <p>Файл: ${file}</p>
       </section>`;
+    hideLoadingBar();
   }
 
   updateActiveNav(route);
+
+  // Update meta tags for SEO
+  updateMetaTags(route);
 
   // UX: якщо мобільне меню відкрите — закриваємо після навігації
   setMobileNavOpen(false);

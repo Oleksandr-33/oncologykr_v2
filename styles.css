@@ -1101,3 +1101,28 @@ html.modal-open {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* Internet Explorer */
 }
+
+/* ===================
+   Loading Bar
+   =================== */
+
+.loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: var(--color-accent);
+  z-index: 10001;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-bar.is-loading {
+  opacity: 1;
+}
+
+.loading-bar.is-complete {
+  width: 100%;
+}
