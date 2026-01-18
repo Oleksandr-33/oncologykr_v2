@@ -9,21 +9,26 @@ This document outlines the technical architecture for oncologykr, balancing the 
 ## Architecture Principles
 
 ### 1. Progressive Enhancement
+
 Start with the simplest solution that works, add complexity only when necessary.
 
 ### 2. Zero-Dependency Core
+
 Maintain vanilla HTML/CSS/JS for core functionality; external services for specialized features only.
 
 ### 3. Static-First
+
 Generate static assets where possible; dynamic functionality via lightweight serverless functions.
 
 ### 4. Performance Budget
+
 - First Contentful Paint: < 1.5s
 - Time to Interactive: < 3s
 - Total Page Weight: < 500KB (excluding images)
 - Lighthouse Score: > 90 all categories
 
 ### 5. Accessibility by Default
+
 WCAG 2.1 AA compliance built into all components from the start.
 
 ---
@@ -215,23 +220,23 @@ import { Analytics } from './js/analytics.js';
 
 // Application initialization
 const app = {
-    router: null,
-    search: null,
+  router: null,
+  search: null,
 
-    async init() {
-        // Initialize core systems
-        this.initTheme();
-        this.initRouter();
-        this.initSearch();
-        this.initMobileNav();
-        this.initModals();
-        this.initServiceWorker();
+  async init() {
+    // Initialize core systems
+    this.initTheme();
+    this.initRouter();
+    this.initSearch();
+    this.initMobileNav();
+    this.initModals();
+    this.initServiceWorker();
 
-        // Start application
-        this.router.start();
-    },
+    // Start application
+    this.router.start();
+  },
 
-    // ... existing functionality
+  // ... existing functionality
 };
 
 document.addEventListener('DOMContentLoaded', () => app.init());
@@ -246,16 +251,16 @@ document.addEventListener('DOMContentLoaded', () => app.init());
    1. Custom Properties (Design Tokens)
    ========================================================================== */
 :root {
-    /* Colors - Light theme */
-    --color-bg: #ffffff;
-    --color-surface: #f6f8fb;
-    /* ... */
+  /* Colors - Light theme */
+  --color-bg: #ffffff;
+  --color-surface: #f6f8fb;
+  /* ... */
 }
 
 [data-theme='dark'] {
-    /* Colors - Dark theme */
-    --color-bg: #0b1220;
-    /* ... */
+  /* Colors - Dark theme */
+  --color-bg: #0b1220;
+  /* ... */
 }
 
 /* ==========================================================================
@@ -301,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => app.init());
    7. Print Styles
    ========================================================================== */
 @media print {
-    /* ... */
+  /* ... */
 }
 ```
 
@@ -330,33 +335,33 @@ document.addEventListener('DOMContentLoaded', () => app.init());
 const sendgrid = require('@sendgrid/mail');
 
 exports.handler = async (event) => {
-    if (event.httpMethod !== 'POST') {
-        return { statusCode: 405, body: 'Method Not Allowed' };
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, body: 'Method Not Allowed' };
+  }
+
+  try {
+    const data = JSON.parse(event.body);
+
+    // Validation
+    if (!data.email || !data.message) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Missing required fields' }),
+      };
     }
 
-    try {
-        const data = JSON.parse(event.body);
+    // Honeypot check
+    if (data.website) {
+      return { statusCode: 200, body: JSON.stringify({ success: true }) };
+    }
 
-        // Validation
-        if (!data.email || !data.message) {
-            return {
-                statusCode: 400,
-                body: JSON.stringify({ error: 'Missing required fields' })
-            };
-        }
-
-        // Honeypot check
-        if (data.website) {
-            return { statusCode: 200, body: JSON.stringify({ success: true }) };
-        }
-
-        // Send email
-        sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
-        await sendgrid.send({
-            to: 'contact@oncologykr.ua',
-            from: 'noreply@oncologykr.ua',
-            subject: `Website Contact: ${data.subject}`,
-            text: `
+    // Send email
+    sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+    await sendgrid.send({
+      to: 'contact@oncologykr.com',
+      from: 'noreply@oncologykr.com',
+      subject: `Website Contact: ${data.subject}`,
+      text: `
 Name: ${data.name}
 Email: ${data.email}
 Phone: ${data.phone || 'Not provided'}
@@ -364,18 +369,18 @@ Phone: ${data.phone || 'Not provided'}
 Message:
 ${data.message}
             `,
-        });
+    });
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ success: true }),
-        };
-    } catch (error) {
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ error: 'Failed to send message' }),
-        };
-    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ success: true }),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'Failed to send message' }),
+    };
+  }
 };
 ```
 
@@ -383,11 +388,11 @@ ${data.message}
 
 **Use Case:** Simple form handling without custom code
 
-| Service | Free Tier | Features |
-|---------|-----------|----------|
-| Netlify Forms | 100 submissions/month | Built-in, spam filter |
-| Formspree | 50 submissions/month | Email notifications |
-| Basin | 100 submissions/month | Webhooks, integrations |
+| Service       | Free Tier             | Features               |
+| ------------- | --------------------- | ---------------------- |
+| Netlify Forms | 100 submissions/month | Built-in, spam filter  |
+| Formspree     | 50 submissions/month  | Email notifications    |
+| Basin         | 100 submissions/month | Webhooks, integrations |
 
 ### Option 3: Full Backend (Future Consideration)
 
@@ -406,59 +411,57 @@ Static JSON files stored in `/data/` directory.
 ```json
 // data/doctors.json
 {
-    "lastUpdated": "2026-01-15",
-    "doctors": [
-        {
-            "id": "kovalenko-petro",
-            "name": "Коваленко Петро Іванович",
-            "title": "Лікар онколог вищої категорії",
-            "department": "oncology",
-            "specialties": ["breast-cancer", "lung-cancer"],
-            "experience": 15,
-            "education": [
-                "Дніпропетровська медична академія, 2008"
-            ],
-            "languages": ["uk", "ru", "en"],
-            "photo": "/images/doctors/kovalenko-petro.webp",
-            "contact": {
-                "email": "kovalenko@oncologykr.ua",
-                "phone": "+380 XX XXX XXXX"
-            }
-        }
-        // ... more doctors
-    ]
+  "lastUpdated": "2026-01-15",
+  "doctors": [
+    {
+      "id": "kovalenko-petro",
+      "name": "Коваленко Петро Іванович",
+      "title": "Лікар онколог вищої категорії",
+      "department": "oncology",
+      "specialties": ["breast-cancer", "lung-cancer"],
+      "experience": 15,
+      "education": ["Дніпропетровська медична академія, 2008"],
+      "languages": ["uk", "ru", "en"],
+      "photo": "/images/doctors/kovalenko-petro.webp",
+      "contact": {
+        "email": "kovalenko@oncologykr.com",
+        "phone": "+380 XX XXX XXXX"
+      }
+    }
+    // ... more doctors
+  ]
 }
 ```
 
 ```json
 // data/faq.json
 {
-    "lastUpdated": "2026-01-15",
-    "categories": [
+  "lastUpdated": "2026-01-15",
+  "categories": [
+    {
+      "id": "first-visit",
+      "name": "Перший візит",
+      "questions": [
         {
-            "id": "first-visit",
-            "name": "Перший візит",
-            "questions": [
-                {
-                    "id": "what-to-bring",
-                    "question": "Що потрібно взяти на перший прийом?",
-                    "answer": "На перший прийом візьміть...",
-                    "relatedPages": ["#/services", "#/contact"]
-                }
-            ]
+          "id": "what-to-bring",
+          "question": "Що потрібно взяти на перший прийом?",
+          "answer": "На перший прийом візьміть...",
+          "relatedPages": ["#/services", "#/contact"]
         }
-    ]
+      ]
+    }
+  ]
 }
 ```
 
 ### Phase 2+: Serverless Database (If Needed)
 
-| Option | Pros | Cons |
-|--------|------|------|
-| **Firebase** | Free tier, real-time | Google lock-in |
-| **Supabase** | PostgreSQL, open-source | Self-hosting option |
-| **PlanetScale** | MySQL, serverless | Limited free tier |
-| **FaunaDB** | Serverless, GraphQL | Learning curve |
+| Option          | Pros                    | Cons                |
+| --------------- | ----------------------- | ------------------- |
+| **Firebase**    | Free tier, real-time    | Google lock-in      |
+| **Supabase**    | PostgreSQL, open-source | Self-hosting option |
+| **PlanetScale** | MySQL, serverless       | Limited free tier   |
+| **FaunaDB**     | Serverless, GraphQL     | Learning curve      |
 
 **Recommended:** Supabase for its PostgreSQL foundation and generous free tier.
 
@@ -532,11 +535,11 @@ GET  /api/search?q={query}
 
 ### Rate Limiting
 
-| Endpoint | Limit |
-|----------|-------|
-| Contact form | 5 requests/minute per IP |
-| Appointment | 3 requests/hour per IP |
-| Search | 30 requests/minute per IP |
+| Endpoint     | Limit                     |
+| ------------ | ------------------------- |
+| Contact form | 5 requests/minute per IP  |
+| Appointment  | 3 requests/hour per IP    |
+| Search       | 30 requests/minute per IP |
 
 ---
 
@@ -544,20 +547,20 @@ GET  /api/search?q={query}
 
 ### Required Integrations
 
-| Service | Purpose | Integration Method |
-|---------|---------|-------------------|
-| **Google Maps** | Location display | Embed iframe |
-| **Email Service** | Send notifications | SendGrid API |
-| **Analytics** | Usage tracking | Script tag |
+| Service           | Purpose            | Integration Method |
+| ----------------- | ------------------ | ------------------ |
+| **Google Maps**   | Location display   | Embed iframe       |
+| **Email Service** | Send notifications | SendGrid API       |
+| **Analytics**     | Usage tracking     | Script tag         |
 
 ### Optional Integrations
 
-| Service | Purpose | Phase |
-|---------|---------|-------|
-| **YouTube** | Video content | Phase 2 |
-| **Calendar** | Appointment booking | Phase 2 |
-| **Newsletter** | Email campaigns | Phase 2 |
-| **Chat Widget** | Live support | Phase 3 |
+| Service         | Purpose             | Phase   |
+| --------------- | ------------------- | ------- |
+| **YouTube**     | Video content       | Phase 2 |
+| **Calendar**    | Appointment booking | Phase 2 |
+| **Newsletter**  | Email campaigns     | Phase 2 |
+| **Chat Widget** | Live support        | Phase 3 |
 
 ### Integration Guidelines
 
@@ -573,6 +576,7 @@ GET  /api/search?q={query}
 ### Recommended: Netlify
 
 **Benefits:**
+
 - Free tier generous for this project
 - Built-in forms, functions, redirects
 - Automatic HTTPS
@@ -608,6 +612,7 @@ GET  /api/search?q={query}
 ### Alternative: Vercel
 
 **Benefits:**
+
 - Excellent serverless functions
 - Fast deployments
 - Good developer experience
@@ -644,7 +649,7 @@ SITE_URL=http://localhost:8000
 # Netlify environment variables (production)
 SENDGRID_API_KEY=SG.xxxxx
 ANALYTICS_ID=xxxxx
-SITE_URL=https://oncologykr.ua
+SITE_URL=https://oncologykr.com
 ```
 
 ---
@@ -657,13 +662,13 @@ Static site hosting handles virtually unlimited traffic for read operations.
 
 ### Growth Scenarios
 
-| Scenario | Solution |
-|----------|----------|
-| **10x traffic** | CDN already handles |
+| Scenario                   | Solution                   |
+| -------------------------- | -------------------------- |
+| **10x traffic**            | CDN already handles        |
 | **Heavy form submissions** | Scale serverless functions |
-| **User accounts** | Add authentication service |
-| **Real-time features** | Add WebSocket service |
-| **Large media files** | External media hosting |
+| **User accounts**          | Add authentication service |
+| **Real-time features**     | Add WebSocket service      |
+| **Large media files**      | External media hosting     |
 
 ### Performance Optimization Path
 
@@ -735,11 +740,11 @@ DO store (with consent):
 
 ### Uptime Monitoring
 
-| Tool | Cost | Features |
-|------|------|----------|
+| Tool            | Cost               | Features            |
+| --------------- | ------------------ | ------------------- |
 | **UptimeRobot** | Free (50 monitors) | Alerts, status page |
-| **Pingdom** | Paid | Detailed metrics |
-| **Netlify** | Included | Basic uptime |
+| **Pingdom**     | Paid               | Detailed metrics    |
+| **Netlify**     | Included           | Basic uptime        |
 
 ### Performance Monitoring
 
@@ -749,10 +754,10 @@ DO store (with consent):
 
 ### Error Tracking
 
-| Tool | Free Tier | Use Case |
-|------|-----------|----------|
-| **Sentry** | 5k events/month | JavaScript errors |
-| **LogRocket** | 1k sessions/month | Session replay |
+| Tool          | Free Tier         | Use Case          |
+| ------------- | ----------------- | ----------------- |
+| **Sentry**    | 5k events/month   | JavaScript errors |
+| **LogRocket** | 1k sessions/month | Session replay    |
 
 ### Health Checks
 
@@ -760,12 +765,12 @@ DO store (with consent):
 // Simple health endpoint
 // functions/health.js
 exports.handler = async () => ({
-    statusCode: 200,
-    body: JSON.stringify({
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        version: '2.4.0'
-    })
+  statusCode: 200,
+  body: JSON.stringify({
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    version: '2.4.0',
+  }),
 });
 ```
 
@@ -782,12 +787,12 @@ exports.handler = async () => ({
 
 ### Recovery Procedures
 
-| Scenario | Recovery |
-|----------|----------|
-| **Site down** | Netlify auto-failover to CDN |
-| **DNS issues** | Multiple DNS providers |
-| **Content corruption** | Git rollback |
-| **Service outage** | Graceful degradation |
+| Scenario               | Recovery                     |
+| ---------------------- | ---------------------------- |
+| **Site down**          | Netlify auto-failover to CDN |
+| **DNS issues**         | Multiple DNS providers       |
+| **Content corruption** | Git rollback                 |
+| **Service outage**     | Graceful degradation         |
 
 ### Failover Plan
 
@@ -826,13 +831,13 @@ open http://localhost:8000
 ```json
 // .vscode/settings.json
 {
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "css.validate": false,
-    "editor.tabSize": 2,
-    "files.associations": {
-        "*.html": "html"
-    }
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "css.validate": false,
+  "editor.tabSize": 2,
+  "files.associations": {
+    "*.html": "html"
+  }
 }
 ```
 
@@ -849,12 +854,12 @@ open http://localhost:8000
 
 ### Current Technical Debt
 
-| Issue | Priority | Resolution |
-|-------|----------|------------|
-| Long services.html (1533 lines) | Medium | Split into components |
-| Mobile menu max-height animation | Low | Use CSS Grid animation |
-| No loading states | High | Add skeleton screens |
-| Favicon caching issues | Low | Add version parameter |
+| Issue                            | Priority | Resolution             |
+| -------------------------------- | -------- | ---------------------- |
+| Long services.html (1533 lines)  | Medium   | Split into components  |
+| Mobile menu max-height animation | Low      | Use CSS Grid animation |
+| No loading states                | High     | Add skeleton screens   |
+| Favicon caching issues           | Low      | Add version parameter  |
 
 ### Code Quality Standards
 
@@ -871,18 +876,21 @@ open http://localhost:8000
 ### From Current to Target Architecture
 
 **Phase 1: Non-Breaking Additions**
+
 - Add `/data/` JSON files
 - Add `/js/` modules (optional loading)
 - Add service worker
 - Add new pages
 
 **Phase 2: Refactoring**
+
 - Extract doctor data to JSON
 - Extract department data to JSON
 - Modularize app.js
 - Add serverless functions
 
 **Phase 3: Enhancement**
+
 - Add database (if needed)
 - Add user accounts (if needed)
 - Add real-time features (if needed)
@@ -893,25 +901,25 @@ open http://localhost:8000
 
 ### Decisions Made
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| **Framework** | Vanilla JS | Zero dependencies, full control |
-| **Styling** | Vanilla CSS | No build step, CSS custom props |
-| **Routing** | Hash-based | Works on any static host |
-| **Hosting** | Netlify | Free tier, functions, forms |
-| **Analytics** | Plausible | Privacy-first, GDPR compliant |
+| Decision      | Choice      | Rationale                       |
+| ------------- | ----------- | ------------------------------- |
+| **Framework** | Vanilla JS  | Zero dependencies, full control |
+| **Styling**   | Vanilla CSS | No build step, CSS custom props |
+| **Routing**   | Hash-based  | Works on any static host        |
+| **Hosting**   | Netlify     | Free tier, functions, forms     |
+| **Analytics** | Plausible   | Privacy-first, GDPR compliant   |
 
 ### Decisions Deferred
 
-| Decision | Options | When to Decide |
-|----------|---------|----------------|
-| **Database** | Supabase vs Firebase | Phase 2, based on needs |
-| **Auth** | Auth0 vs Firebase Auth | Phase 3, if accounts needed |
-| **CMS** | Headless vs static | Phase 2, based on content volume |
+| Decision     | Options                | When to Decide                   |
+| ------------ | ---------------------- | -------------------------------- |
+| **Database** | Supabase vs Firebase   | Phase 2, based on needs          |
+| **Auth**     | Auth0 vs Firebase Auth | Phase 3, if accounts needed      |
+| **CMS**      | Headless vs static     | Phase 2, based on content volume |
 
 ---
 
-*Document Version: 1.0*
-*Last Updated: January 2026*
-*Owner: Development Team*
-*Review Cycle: Quarterly*
+_Document Version: 1.0_
+_Last Updated: January 2026_
+_Owner: Development Team_
+_Review Cycle: Quarterly_

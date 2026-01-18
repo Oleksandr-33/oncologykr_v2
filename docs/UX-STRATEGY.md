@@ -331,7 +331,7 @@ This website conforms to WCAG 2.1 Level AA.
 
 ## Feedback
 We welcome your feedback on accessibility. Please contact us at:
-- Email: accessibility@oncologykr.ua
+- Email: accessibility@oncologykr.com
 - Phone: +380...
 - Form: [Contact form link]
 

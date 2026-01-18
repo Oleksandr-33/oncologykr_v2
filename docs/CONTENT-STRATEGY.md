@@ -15,21 +15,27 @@ This document outlines the content strategy for oncologykr, ensuring all content
 ## Content Principles
 
 ### 1. Accuracy Above All
+
 Every piece of medical information must be verified by licensed oncology professionals. No exceptions. Inaccurate medical information can cause harm.
 
 ### 2. Plain Language
+
 Write at an 8th-grade reading level. Explain medical terms when used. Use short sentences. Avoid jargon.
 
 ### 3. Patient-Centered
+
 Write from the patient's perspective. Answer the questions they're actually asking. Anticipate their concerns.
 
 ### 4. Actionable
+
 Every content piece should give users a clear next step. Don't leave them wondering what to do.
 
 ### 5. Current
+
 Outdated information is dangerous in healthcare. Content must be reviewed regularly and updated when policies change.
 
 ### 6. Compassionate
+
 Remember that readers may be frightened, grieving, or overwhelmed. Write with warmth and empathy while remaining professional.
 
 ---
@@ -40,25 +46,26 @@ Remember that readers may be frightened, grieving, or overwhelmed. Write with wa
 
 **Purpose:** Establish trust, explain who we are, what we do
 
-| Content Type | Description | Owner | Update Frequency |
-|--------------|-------------|-------|------------------|
-| About Us | Organization overview, mission | Admin | Annual |
-| Leadership | Hospital leadership bios | Admin | As needed |
-| Departments | 15 department descriptions | Dept. Heads | Annual |
-| History | Hospital history and milestones | Admin | Rare |
-| Accreditations | Certifications and licenses | Admin | As earned |
+| Content Type   | Description                     | Owner       | Update Frequency |
+| -------------- | ------------------------------- | ----------- | ---------------- |
+| About Us       | Organization overview, mission  | Admin       | Annual           |
+| Leadership     | Hospital leadership bios        | Admin       | As needed        |
+| Departments    | 15 department descriptions      | Dept. Heads | Annual           |
+| History        | Hospital history and milestones | Admin       | Rare             |
+| Accreditations | Certifications and licenses     | Admin       | As earned        |
 
 ### 2. Doctor & Staff Profiles
 
 **Purpose:** Help patients find and connect with specialists
 
-| Content Type | Description | Owner | Update Frequency |
-|--------------|-------------|-------|------------------|
-| Doctor profiles | Bio, credentials, specialties | HR/Medical | Quarterly |
-| Staff directory | Department staff listings | HR | Monthly |
-| Team pages | Department team overviews | Dept. Heads | Quarterly |
+| Content Type    | Description                   | Owner       | Update Frequency |
+| --------------- | ----------------------------- | ----------- | ---------------- |
+| Doctor profiles | Bio, credentials, specialties | HR/Medical  | Quarterly        |
+| Staff directory | Department staff listings     | HR          | Monthly          |
+| Team pages      | Department team overviews     | Dept. Heads | Quarterly        |
 
 **Doctor Profile Template:**
+
 ```
 Name: [Full name with title]
 Photo: [Professional headshot]
@@ -80,27 +87,28 @@ Contact: [Phone, email if appropriate]
 
 **Purpose:** Explain available services, procedures, coverage
 
-| Content Type | Description | Owner | Update Frequency |
-|--------------|-------------|-------|------------------|
-| Service packages | NSZU package descriptions | Admin | Policy changes |
-| Procedures | Specific procedure information | Medical | As needed |
-| Equipment | Available technology/equipment | Medical | As acquired |
-| Insurance | NSZU and insurance info | Admin | Policy changes |
+| Content Type     | Description                    | Owner   | Update Frequency |
+| ---------------- | ------------------------------ | ------- | ---------------- |
+| Service packages | NSZU package descriptions      | Admin   | Policy changes   |
+| Procedures       | Specific procedure information | Medical | As needed        |
+| Equipment        | Available technology/equipment | Medical | As acquired      |
+| Insurance        | NSZU and insurance info        | Admin   | Policy changes   |
 
 ### 4. Patient Education
 
 **Purpose:** Help patients understand their diagnosis and treatment
 
-| Content Type | Description | Owner | Update Frequency |
-|--------------|-------------|-------|------------------|
-| Disease guides | Cancer type overviews | Medical | Annual |
-| Treatment guides | Treatment explanations | Medical | Annual |
-| Journey guides | Treatment path timelines | Medical | Annual |
-| Side effect guides | Managing treatment effects | Medical | Annual |
-| Lifestyle guides | Nutrition, exercise, wellness | Medical | Annual |
-| Support resources | Emotional, financial support | Social Work | Quarterly |
+| Content Type       | Description                   | Owner       | Update Frequency |
+| ------------------ | ----------------------------- | ----------- | ---------------- |
+| Disease guides     | Cancer type overviews         | Medical     | Annual           |
+| Treatment guides   | Treatment explanations        | Medical     | Annual           |
+| Journey guides     | Treatment path timelines      | Medical     | Annual           |
+| Side effect guides | Managing treatment effects    | Medical     | Annual           |
+| Lifestyle guides   | Nutrition, exercise, wellness | Medical     | Annual           |
+| Support resources  | Emotional, financial support  | Social Work | Quarterly        |
 
 **Article Template:**
+
 ```markdown
 # [Article Title]
 
@@ -109,65 +117,72 @@ Contact: [Phone, email if appropriate]
 **Medical reviewer:** [Doctor name, credentials]
 
 ## Overview
+
 [Brief summary of what the article covers]
 
 ## [Section 1]
+
 [Content]
 
 ## [Section 2]
+
 [Content]
 
 ## What to Do Next
+
 [Clear action items]
 
 ## Related Articles
+
 - [Link 1]
 - [Link 2]
 
 ## Questions?
+
 If you have questions, contact your care team or call us at [phone].
 
 ---
-*This information is for educational purposes and does not replace
-professional medical advice. Always consult your doctor.*
+
+_This information is for educational purposes and does not replace
+professional medical advice. Always consult your doctor._
 ```
 
 ### 5. FAQ Content
 
 **Purpose:** Answer common questions quickly
 
-| Category | Example Questions |
-|----------|-------------------|
-| First Visit | What to bring, what to expect, preparation |
-| Appointments | How to schedule, reschedule, cancel |
-| Services | What's covered, costs, procedures |
-| Insurance/NSZU | Coverage, documentation, billing |
-| Treatment | Duration, side effects, alternatives |
-| Results | How to get results, understanding reports |
-| Visitor Info | Hours, parking, policies |
-| Emergency | When to seek emergency care |
+| Category       | Example Questions                          |
+| -------------- | ------------------------------------------ |
+| First Visit    | What to bring, what to expect, preparation |
+| Appointments   | How to schedule, reschedule, cancel        |
+| Services       | What's covered, costs, procedures          |
+| Insurance/NSZU | Coverage, documentation, billing           |
+| Treatment      | Duration, side effects, alternatives       |
+| Results        | How to get results, understanding reports  |
+| Visitor Info   | Hours, parking, policies                   |
+| Emergency      | When to seek emergency care                |
 
 ### 6. News & Updates
 
 **Purpose:** Keep patients informed about hospital news
 
-| Content Type | Description | Frequency |
-|--------------|-------------|-----------|
-| Announcements | Policy changes, hours changes | As needed |
-| News articles | Hospital achievements, events | Weekly |
-| Health awareness | Cancer awareness dates, tips | Monthly |
-| Staff news | New doctors, achievements | Monthly |
+| Content Type     | Description                   | Frequency |
+| ---------------- | ----------------------------- | --------- |
+| Announcements    | Policy changes, hours changes | As needed |
+| News articles    | Hospital achievements, events | Weekly    |
+| Health awareness | Cancer awareness dates, tips  | Monthly   |
+| Staff news       | New doctors, achievements     | Monthly   |
 
 ### 7. Resource Documents
 
 **Purpose:** Provide downloadable materials
 
-| Document Type | Format | Update Frequency |
-|---------------|--------|------------------|
-| Patient forms | PDF | As revised |
-| Information sheets | PDF | Annual |
-| Preparation guides | PDF | As needed |
-| Contact cards | PDF | Quarterly |
+| Document Type      | Format | Update Frequency |
+| ------------------ | ------ | ---------------- |
+| Patient forms      | PDF    | As revised       |
+| Information sheets | PDF    | Annual           |
+| Preparation guides | PDF    | As needed        |
+| Contact cards      | PDF    | Quarterly        |
 
 ---
 
@@ -177,7 +192,7 @@ professional medical advice. Always consult your doctor.*
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                    CONTENT REVIEW WORKFLOW                       │
+│                    CONTENT REVIEW WORKFLOW                      │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                 │
 │   Content Draft                                                 │
@@ -225,6 +240,7 @@ professional medical advice. Always consult your doctor.*
 ### Required Disclaimers
 
 **For all medical content:**
+
 ```
 Ця інформація призначена лише для освітніх цілей і не замінює
 професійну медичну консультацію, діагностику чи лікування.
@@ -240,6 +256,7 @@ health condition.
 ```
 
 **For symptom information:**
+
 ```
 Якщо у вас є тривожні симптоми, негайно зверніться до лікаря.
 Не відкладайте звернення за медичною допомогою.
@@ -272,18 +289,18 @@ Do not delay seeking medical care.
 
 ### Core Article Set (Phase 1)
 
-| # | Article Title | Target Word Count |
-|---|---------------|-------------------|
-| 1 | Що таке рак? Базове розуміння | 800-1000 |
-| 2 | Як діагностується рак | 1000-1200 |
-| 3 | Розуміння вашого діагнозу | 800-1000 |
-| 4 | Огляд варіантів лікування | 1200-1500 |
-| 5 | Хіміотерапія: що очікувати | 1500-2000 |
-| 6 | Променева терапія: посібник | 1500-2000 |
-| 7 | Підготовка до операції | 1000-1200 |
-| 8 | Управління побічними ефектами | 1500-2000 |
-| 9 | Харчування під час лікування | 1200-1500 |
-| 10 | Емоційна підтримка та ресурси | 1000-1200 |
+| #   | Article Title                 | Target Word Count |
+| --- | ----------------------------- | ----------------- |
+| 1   | Що таке рак? Базове розуміння | 800-1000          |
+| 2   | Як діагностується рак         | 1000-1200         |
+| 3   | Розуміння вашого діагнозу     | 800-1000          |
+| 4   | Огляд варіантів лікування     | 1200-1500         |
+| 5   | Хіміотерапія: що очікувати    | 1500-2000         |
+| 6   | Променева терапія: посібник   | 1500-2000         |
+| 7   | Підготовка до операції        | 1000-1200         |
+| 8   | Управління побічними ефектами | 1500-2000         |
+| 9   | Харчування під час лікування  | 1200-1500         |
+| 10  | Емоційна підтримка та ресурси | 1000-1200         |
 
 ### Article Structure Template
 
@@ -295,9 +312,11 @@ Do not delay seeking medical care.
 **Медичний рецензент:** [ПІБ лікаря, кваліфікація]
 
 ## Коротко
+
 [1-2 речення, що підсумовують ключові моменти]
 
 ## Що ви дізнаєтесь
+
 - [Ключовий пункт 1]
 - [Ключовий пункт 2]
 - [Ключовий пункт 3]
@@ -305,46 +324,55 @@ Do not delay seeking medical care.
 ---
 
 ## [Розділ 1: Основна інформація]
+
 [Контент з підзаголовками за потреби]
 
 ## [Розділ 2]
+
 [Контент]
 
 ### [Підрозділ]
+
 [Деталі]
 
 ## [Розділ 3]
+
 [Контент]
 
 ---
 
 ## Ключові висновки
+
 - [Висновок 1]
 - [Висновок 2]
 - [Висновок 3]
 
 ## Що робити далі
+
 1. [Конкретна дія]
 2. [Конкретна дія]
 3. [Конкретна дія]
 
 ## Пов'язані статті
+
 - [Посилання на статтю 1]
 - [Посилання на статтю 2]
 
 ## Питання до вашого лікаря
+
 - [Питання 1]
 - [Питання 2]
 - [Питання 3]
 
 ---
 
-*Ця інформація призначена лише для освітніх цілей...*
+_Ця інформація призначена лише для освітніх цілей..._
 ```
 
 ### Writing Guidelines
 
 **Readability:**
+
 - Sentences: 15-20 words average
 - Paragraphs: 3-5 sentences maximum
 - Reading level: 8th grade (Flesch-Kincaid)
@@ -352,12 +380,14 @@ Do not delay seeking medical care.
 - Use numbered steps for procedures
 
 **Terminology:**
+
 - Define medical terms on first use
 - Provide pronunciation guides for complex terms
 - Link to glossary entries
 - Use Ukrainian medical terminology with explanations
 
 **Formatting:**
+
 - Clear heading hierarchy (H1 > H2 > H3)
 - Bold key terms and important warnings
 - Use tables for comparisons
@@ -369,19 +399,19 @@ Do not delay seeking medical care.
 
 ### Required Information
 
-| Field | Required | Example |
-|-------|----------|---------|
-| Full name | Yes | Коваленко Петро Іванович |
-| Title | Yes | Лікар онколог вищої категорії |
-| Photo | Recommended | Professional headshot |
-| Department | Yes | Відділення хіміотерапії |
-| Specialties | Yes | Рак молочної залози, рак легенів |
-| Experience | Recommended | 15 років практики |
-| Education | Yes | Медична академія, рік |
-| Certifications | Yes | Атестат вищої категорії |
-| Languages | Recommended | Українська, російська, англійська |
-| Bio | Recommended | 100-200 words |
-| Contact | Optional | Email, phone |
+| Field          | Required    | Example                           |
+| -------------- | ----------- | --------------------------------- |
+| Full name      | Yes         | Коваленко Петро Іванович          |
+| Title          | Yes         | Лікар онколог вищої категорії     |
+| Photo          | Recommended | Professional headshot             |
+| Department     | Yes         | Відділення хіміотерапії           |
+| Specialties    | Yes         | Рак молочної залози, рак легенів  |
+| Experience     | Recommended | 15 років практики                 |
+| Education      | Yes         | Медична академія, рік             |
+| Certifications | Yes         | Атестат вищої категорії           |
+| Languages      | Recommended | Українська, російська, англійська |
+| Bio            | Recommended | 100-200 words                     |
+| Contact        | Optional    | Email, phone                      |
 
 ### Photo Guidelines
 
@@ -456,14 +486,14 @@ Example:
 
 ### Scheduled Reviews
 
-| Content Type | Review Cycle | Trigger Updates |
-|--------------|--------------|-----------------|
-| Medical articles | Annual | Guideline changes |
-| Doctor profiles | Quarterly | Staff changes |
-| Department info | Annual | Service changes |
-| Service packages | Policy changes | NSZU updates |
-| FAQ | Quarterly | Common questions |
-| Contact info | Monthly | Staff changes |
+| Content Type     | Review Cycle   | Trigger Updates   |
+| ---------------- | -------------- | ----------------- |
+| Medical articles | Annual         | Guideline changes |
+| Doctor profiles  | Quarterly      | Staff changes     |
+| Department info  | Annual         | Service changes   |
+| Service packages | Policy changes | NSZU updates      |
+| FAQ              | Quarterly      | Common questions  |
+| Contact info     | Monthly        | Staff changes     |
 
 ### Update Triggers
 
@@ -513,36 +543,40 @@ Example:
 
 ### Monthly Themes (Suggested)
 
-| Month | Health Awareness Theme | Content Focus |
-|-------|------------------------|---------------|
-| February | World Cancer Day | General awareness |
-| March | Colorectal Cancer | Screening, prevention |
-| April | Head & Neck Cancer | Early detection |
-| May | Melanoma/Skin Cancer | Sun safety |
-| June | Sarcoma Awareness | Rare cancers |
-| July | Hepatitis/Liver Cancer | Prevention |
-| September | Prostate Cancer | Men's health |
-| October | Breast Cancer | Screening, support |
-| November | Lung Cancer | Quit smoking |
-| December | Family Support | Caregiver resources |
+| Month     | Health Awareness Theme | Content Focus         |
+| --------- | ---------------------- | --------------------- |
+| February  | World Cancer Day       | General awareness     |
+| March     | Colorectal Cancer      | Screening, prevention |
+| April     | Head & Neck Cancer     | Early detection       |
+| May       | Melanoma/Skin Cancer   | Sun safety            |
+| June      | Sarcoma Awareness      | Rare cancers          |
+| July      | Hepatitis/Liver Cancer | Prevention            |
+| September | Prostate Cancer        | Men's health          |
+| October   | Breast Cancer          | Screening, support    |
+| November  | Lung Cancer            | Quit smoking          |
+| December  | Family Support         | Caregiver resources   |
 
 ### Content Production Schedule
 
 **Weekly:**
+
 - 1 news article or announcement
 - Social media coordination (if applicable)
 
 **Monthly:**
+
 - 1 new educational article
 - FAQ review and updates
 - Document library review
 
 **Quarterly:**
+
 - Doctor profile updates
 - Department information review
 - Content performance review
 
 **Annually:**
+
 - Full content audit
 - Medical article review
 - Policy compliance check
@@ -554,6 +588,7 @@ Example:
 ### Keyword Strategy
 
 **Primary Keywords:**
+
 - онкологічний диспансер Кривий Ріг
 - лікування раку Кривий Ріг
 - онколог Кривий Ріг
@@ -561,6 +596,7 @@ Example:
 - [cancer type] лікування
 
 **Secondary Keywords:**
+
 - симптоми раку
 - діагностика раку
 - побічні ефекти хіміотерапії
@@ -574,9 +610,12 @@ Example:
 <title>Хіміотерапія: Посібник для пацієнтів | Онкодиспансер Кривий Ріг</title>
 
 <!-- Meta description (150-160 characters) -->
-<meta name="description" content="Дізнайтеся, що очікувати під час
+<meta
+  name="description"
+  content="Дізнайтеся, що очікувати під час
 хіміотерапії: підготовка, процедура, побічні ефекти та відновлення.
-Перевірена медична інформація від фахівців.">
+Перевірена медична інформація від фахівців."
+/>
 
 <!-- Heading structure -->
 <h1>Хіміотерапія: Повний посібник для пацієнтів</h1>
@@ -586,13 +625,13 @@ Example:
 
 ### Content Length Guidelines
 
-| Content Type | Minimum Words | Optimal Words |
-|--------------|---------------|---------------|
-| Educational article | 800 | 1500-2000 |
-| FAQ answer | 50 | 100-200 |
-| Doctor bio | 100 | 150-200 |
-| Department description | 200 | 300-400 |
-| Service description | 150 | 250-350 |
+| Content Type           | Minimum Words | Optimal Words |
+| ---------------------- | ------------- | ------------- |
+| Educational article    | 800           | 1500-2000     |
+| FAQ answer             | 50            | 100-200       |
+| Doctor bio             | 100           | 150-200       |
+| Department description | 200           | 300-400       |
+| Service description    | 150           | 250-350       |
 
 ---
 
@@ -631,25 +670,25 @@ Example:
 
 ### Roles and Responsibilities
 
-| Role | Responsibilities |
-|------|------------------|
-| **Content Manager** | Day-to-day content updates, calendar management, coordination |
-| **Medical Reviewer** | Accuracy verification, medical sign-off |
-| **Department Heads** | Department-specific content approval |
-| **Medical Director** | Final approval for clinical content |
-| **Web Developer** | Technical implementation, publishing |
+| Role                 | Responsibilities                                              |
+| -------------------- | ------------------------------------------------------------- |
+| **Content Manager**  | Day-to-day content updates, calendar management, coordination |
+| **Medical Reviewer** | Accuracy verification, medical sign-off                       |
+| **Department Heads** | Department-specific content approval                          |
+| **Medical Director** | Final approval for clinical content                           |
+| **Web Developer**    | Technical implementation, publishing                          |
 
 ### Approval Matrix
 
-| Content Type | Content Manager | Medical Reviewer | Medical Director |
-|--------------|-----------------|------------------|------------------|
-| News/Announcements | ✓ Approve | - | - |
-| Service info | ✓ Approve | - | - |
-| Contact/Hours | ✓ Approve | - | - |
-| Doctor profiles | ✓ Approve | - | - |
-| Medical education | ✓ Draft | ✓ Review | ✓ Approve |
-| Treatment guides | ✓ Draft | ✓ Review | ✓ Approve |
-| Symptom info | ✓ Draft | ✓ Review | ✓ Approve |
+| Content Type       | Content Manager | Medical Reviewer | Medical Director |
+| ------------------ | --------------- | ---------------- | ---------------- |
+| News/Announcements | ✓ Approve       | -                | -                |
+| Service info       | ✓ Approve       | -                | -                |
+| Contact/Hours      | ✓ Approve       | -                | -                |
+| Doctor profiles    | ✓ Approve       | -                | -                |
+| Medical education  | ✓ Draft         | ✓ Review         | ✓ Approve        |
+| Treatment guides   | ✓ Draft         | ✓ Review         | ✓ Approve        |
+| Symptom info       | ✓ Draft         | ✓ Review         | ✓ Approve        |
 
 ### Content Audit Checklist
 
@@ -676,23 +715,25 @@ Annual Content Audit:
 
 ### Key Metrics to Track
 
-| Metric | Target | Tool |
-|--------|--------|------|
-| Page views per article | 100+/month | Analytics |
-| Average time on page | > 2 minutes | Analytics |
-| Scroll depth | > 75% | Analytics |
-| Search queries | Top 20 tracked | Analytics |
-| Content freshness | < 365 days | Manual audit |
-| Readability score | Grade 8 or below | Hemingway/similar |
+| Metric                 | Target           | Tool              |
+| ---------------------- | ---------------- | ----------------- |
+| Page views per article | 100+/month       | Analytics         |
+| Average time on page   | > 2 minutes      | Analytics         |
+| Scroll depth           | > 75%            | Analytics         |
+| Search queries         | Top 20 tracked   | Analytics         |
+| Content freshness      | < 365 days       | Manual audit      |
+| Readability score      | Grade 8 or below | Hemingway/similar |
 
 ### Content Performance Review
 
 **Monthly:**
+
 - Top 10 most viewed pages
 - Search queries leading to site
 - Bounce rate by page
 
 **Quarterly:**
+
 - Content gap analysis
 - User feedback summary
 - Update priority list
@@ -739,7 +780,7 @@ SEO:
 
 ---
 
-*Document Version: 1.0*
-*Last Updated: January 2026*
-*Owner: Content Team*
-*Review Cycle: Quarterly*
+_Document Version: 1.0_
+_Last Updated: January 2026_
+_Owner: Content Team_
+_Review Cycle: Quarterly_

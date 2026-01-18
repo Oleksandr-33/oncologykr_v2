@@ -168,12 +168,12 @@ function updateMeta(route) {
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://oncologykr.ua/#/home</loc>
+    <loc>https://oncologykr.com/#/home</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://oncologykr.ua/#/about</loc>
+    <loc>https://oncologykr.com/#/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -185,7 +185,7 @@ function updateMeta(route) {
 ```
 User-agent: *
 Allow: /
-Sitemap: https://oncologykr.ua/sitemap.xml
+Sitemap: https://oncologykr.com/sitemap.xml
 ```
 
 **Verification:**
@@ -205,7 +205,7 @@ Sitemap: https://oncologykr.ua/sitemap.xml
 1. Sign up at plausible.io (~$9/month)
 2. Add script to index.html before `</head>`:
 ```html
-<script defer data-domain="oncologykr.ua" src="https://plausible.io/js/script.js"></script>
+<script defer data-domain="oncologykr.com" src="https://plausible.io/js/script.js"></script>
 ```
 
 3. Add custom events tracking:

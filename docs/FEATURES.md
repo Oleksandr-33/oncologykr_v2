@@ -121,13 +121,13 @@ Comprehensive search engine optimization to improve discoverability and search r
 <!-- Per-page meta tags -->
 <title>{Page Title} | Криворізький онкологічний диспансер</title>
 <meta name="description" content="{Page-specific description}">
-<link rel="canonical" href="https://oncologykr.ua/#/{page}">
+<link rel="canonical" href="https://oncologykr.com/#/{page}">
 
 <!-- Open Graph -->
 <meta property="og:title" content="{Title}">
 <meta property="og:description" content="{Description}">
-<meta property="og:image" content="https://oncologykr.ua/images/og-image.jpg">
-<meta property="og:url" content="https://oncologykr.ua/#/{page}">
+<meta property="og:image" content="https://oncologykr.com/images/og-image.jpg">
+<meta property="og:url" content="https://oncologykr.com/#/{page}">
 <meta property="og:type" content="website">
 
 <!-- Twitter Cards -->
@@ -141,7 +141,7 @@ Comprehensive search engine optimization to improve discoverability and search r
   "@context": "https://schema.org",
   "@type": "MedicalOrganization",
   "name": "КНТ «Криворізький онкологічний диспансер»",
-  "url": "https://oncologykr.ua",
+  "url": "https://oncologykr.com",
   "telephone": "+380...",
   "address": {
     "@type": "PostalAddress",
@@ -399,7 +399,7 @@ Expanded doctor profiles with photos, detailed credentials, specialties, and con
   "languages": ["uk", "ru", "en"],
   "bio": "Brief professional biography...",
   "contact": {
-    "email": "email@oncologykr.ua",
+    "email": "email@oncologykr.com",
     "phone": "+380..."
   }
 }
