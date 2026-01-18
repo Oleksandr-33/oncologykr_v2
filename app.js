@@ -8,6 +8,7 @@ const routes = {
   about: 'pages/about.html',
   doctors: 'pages/doctors.html',
   services: 'pages/services.html',
+  contact: 'pages/contact.html',
   404: 'pages/404.html',
 };
 
@@ -32,6 +33,11 @@ const pageMeta = {
     title: 'Наші лікарі - Онкологія Кривий Ріг',
     description: 'Експертні команди з оцінювання повсякденного функціонування особи (ЕКОПФО). Висококваліфіковані лікарі-онкологи та хірурги-онкологи Криворізького онкологічного диспансеру.',
     url: 'https://oncologykr.com/#/doctors'
+  },
+  contact: {
+    title: 'Контакти - Онкологія Кривий Ріг',
+    description: 'Зв\'яжіться з Криворізьким онкологічним диспансером. Надішліть нам повідомлення через контактну форму або зателефонуйте за номерами: (098) 905-09-87, (056) 405-45-47.',
+    url: 'https://oncologykr.com/#/contact'
   },
   404: {
     title: '404 - Сторінку не знайдено | Онкологія Кривий Ріг',
@@ -458,6 +464,279 @@ function initContentModal() {
   });
 }
 
+/* ===============================
+   CONTACT FORM (Validation + Submit)
+   =============================== */
+
+// Form validation patterns
+const VALIDATION_PATTERNS = {
+  email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  phoneUA: /^(\+380|0)\d{9}$/,
+};
+
+// Character limits
+const CHAR_LIMITS = {
+  name: 100,
+  subject: 200,
+  message: 1000,
+};
+
+// Form submission state
+let isSubmitting = false;
+
+/**
+ * Validate a single form field
+ * @param {HTMLElement} field - The form field to validate
+ * @returns {boolean} - True if valid, false otherwise
+ */
+function validateField(field) {
+  const errorSpan = document.getElementById(`${field.id.replace('contact-', '')}-error`);
+  if (!errorSpan) return true;
+
+  const value = field.value.trim();
+  const fieldName = field.name;
+  let errorMessage = '';
+
+  // Clear previous error
+  errorSpan.textContent = '';
+  field.classList.remove('form-input--error', 'form-select--error', 'form-textarea--error');
+
+  // Required field check
+  if (field.hasAttribute('required') && !value) {
+    errorMessage = 'Це поле обов\'язкове';
+  }
+  // Email validation
+  else if (fieldName === 'email' && value && !VALIDATION_PATTERNS.email.test(value)) {
+    errorMessage = 'Введіть коректну email адресу';
+  }
+  // Phone validation (optional but if filled, must be valid)
+  else if (fieldName === 'phone' && value && !VALIDATION_PATTERNS.phoneUA.test(value)) {
+    errorMessage = 'Формат: +380XXXXXXXXX або 0XXXXXXXXX';
+  }
+  // Character limit checks
+  else if (fieldName === 'name' && value.length > CHAR_LIMITS.name) {
+    errorMessage = `Максимум ${CHAR_LIMITS.name} символів`;
+  } else if (fieldName === 'message' && value.length > CHAR_LIMITS.message) {
+    errorMessage = `Максимум ${CHAR_LIMITS.message} символів`;
+  }
+
+  // Display error if any
+  if (errorMessage) {
+    errorSpan.textContent = errorMessage;
+    if (field.classList.contains('form-input')) {
+      field.classList.add('form-input--error');
+    } else if (field.classList.contains('form-select')) {
+      field.classList.add('form-select--error');
+    } else if (field.classList.contains('form-textarea')) {
+      field.classList.add('form-textarea--error');
+    }
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Validate entire form
+ * @param {HTMLFormElement} form - The form to validate
+ * @returns {boolean} - True if all fields are valid
+ */
+function validateForm(form) {
+  const fields = form.querySelectorAll('input, select, textarea');
+  let isValid = true;
+
+  fields.forEach((field) => {
+    if (!validateField(field)) {
+      isValid = false;
+    }
+  });
+
+  return isValid;
+}
+
+/**
+ * Update character counter for textarea
+ * @param {HTMLTextAreaElement} textarea - The textarea element
+ */
+function updateCharCounter(textarea) {
+  const counter = document.getElementById('message-counter');
+  if (!counter) return;
+
+  const length = textarea.value.length;
+  const limit = CHAR_LIMITS.message;
+  counter.textContent = `${length} / ${limit}`;
+
+  // Visual feedback when approaching limit
+  if (length > limit * 0.9) {
+    counter.style.color = 'var(--color-error, #dc2626)';
+  } else {
+    counter.style.color = 'var(--color-muted)';
+  }
+}
+
+/**
+ * Show form status message (success or error)
+ * @param {string} message - The message to display
+ * @param {string} type - 'success' or 'error'
+ */
+function showFormStatus(message, type) {
+  const statusDiv = document.getElementById('form-status');
+  if (!statusDiv) return;
+
+  statusDiv.textContent = message;
+  statusDiv.className = `form-status form-status--${type}`;
+  statusDiv.style.display = 'block';
+
+  // Scroll to status message
+  statusDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Auto-hide success message after 10 seconds
+  if (type === 'success') {
+    setTimeout(() => {
+      statusDiv.style.display = 'none';
+    }, 10000);
+  }
+}
+
+/**
+ * Set form loading state
+ * @param {HTMLFormElement} form - The form element
+ * @param {boolean} loading - True to show loading state
+ */
+function setFormLoading(form, loading) {
+  const submitBtn = form.querySelector('#contact-submit');
+  const inputs = form.querySelectorAll('input, select, textarea, button');
+
+  if (loading) {
+    submitBtn.classList.add('btn--loading');
+    submitBtn.setAttribute('aria-busy', 'true');
+    submitBtn.disabled = true;
+    inputs.forEach((input) => (input.disabled = true));
+    showLoadingBar(); // Use existing loading bar from app.js
+  } else {
+    submitBtn.classList.remove('btn--loading');
+    submitBtn.setAttribute('aria-busy', 'false');
+    submitBtn.disabled = false;
+    inputs.forEach((input) => (input.disabled = false));
+    hideLoadingBar();
+  }
+}
+
+/**
+ * Handle form submission
+ * @param {Event} e - The submit event
+ */
+async function handleContactFormSubmit(e) {
+  e.preventDefault();
+
+  const form = e.target;
+
+  // Prevent double submission
+  if (isSubmitting) return;
+
+  // Validate form
+  if (!validateForm(form)) {
+    showFormStatus('Будь ласка, виправте помилки у формі', 'error');
+    return;
+  }
+
+  // Set submitting state
+  isSubmitting = true;
+  setFormLoading(form, true);
+
+  // Get form data
+  const formData = {
+    name: form.name.value.trim(),
+    email: form.email.value.trim(),
+    phone: form.phone.value.trim(),
+    subject: form.subject.value,
+    message: form.message.value.trim(),
+  };
+
+  try {
+    // TODO: Replace with proper backend API endpoint
+    // For now, we'll use mailto: as a temporary solution
+    // This will open the user's email client with pre-filled data
+
+    const emailBody = `
+Ім'я: ${formData.name}
+Email: ${formData.email}
+Телефон: ${formData.phone || 'Не вказано'}
+Тема: ${formData.subject}
+
+Повідомлення:
+${formData.message}
+    `.trim();
+
+    const mailtoLink = `mailto:onkoriad@gmail.com?subject=${encodeURIComponent(
+      `[Контактна форма] ${formData.subject}`
+    )}&body=${encodeURIComponent(emailBody)}`;
+
+    // Track form submission
+    trackEvent('Form Submit', { type: formData.subject });
+
+    // Open mailto link
+    window.location.href = mailtoLink;
+
+    // Show success message
+    showFormStatus(
+      'Дякуємо! Ваше повідомлення надіслано. Ми зв\'яжемося з вами найближчим часом.',
+      'success'
+    );
+
+    // Reset form after successful submission
+    form.reset();
+    updateCharCounter(form.message);
+
+    // Reset submitting state after a delay
+    setTimeout(() => {
+      isSubmitting = false;
+      setFormLoading(form, false);
+    }, 2000);
+  } catch (error) {
+    console.error('Form submission error:', error);
+    showFormStatus(
+      'Помилка відправки. Спробуйте пізніше або зателефонуйте нам.',
+      'error'
+    );
+    isSubmitting = false;
+    setFormLoading(form, false);
+  }
+}
+
+/**
+ * Initialize contact form
+ */
+function initContactForm() {
+  // Event delegation for form submission
+  document.addEventListener('submit', (e) => {
+    if (e.target.id === 'contact-form') {
+      handleContactFormSubmit(e);
+    }
+  });
+
+  // Event delegation for real-time validation
+  document.addEventListener('blur', (e) => {
+    const target = e.target;
+    if (
+      target.form &&
+      target.form.id === 'contact-form' &&
+      (target.tagName === 'INPUT' ||
+        target.tagName === 'SELECT' ||
+        target.tagName === 'TEXTAREA')
+    ) {
+      validateField(target);
+    }
+  }, true);
+
+  // Event delegation for character counter
+  document.addEventListener('input', (e) => {
+    if (e.target.id === 'contact-message') {
+      updateCharCounter(e.target);
+    }
+  });
+}
+
 /* ---------- ROUTER ---------- */
 function router() {
   loadPage(getRoute());
@@ -541,6 +820,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // modals
   initPdfModal();
   initContentModal();
+
+  // contact form
+  initContactForm();
 
   // analytics - track navigation clicks
   initNavigationTracking();
